@@ -1,0 +1,18 @@
+---
+interface Props {
+  title: string;
+  range?: string;
+}
+
+const { title, range } = Astro.props;
+---
+
+<div class="rounded-2xl border border-slate-200 bg-cream-50 shadow-sm">
+  <div class="flex items-center justify-between border-b border-slate-200 bg-cream-100 px-6 py-4">
+    <h2 class="text-sm font-semibold text-slate-900">{title}</h2>
+    {range && <span class="text-xs font-medium text-slate-400">{range}</span>}
+  </div>
+  <div class="space-y-7 px-6 py-6">
+    <slot />
+  </div>
+</div>

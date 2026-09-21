@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import Button from "../../components/Button.astro";
+---
+
+<BaseLayout title="Merci" description="Votre demande a bien été envoyée à conform-IT." noindex>
+  <Section as="h1" tone="white" eyebrow="Demande envoyée" title="Merci !">
+    <div class="mx-auto max-w-xl text-center">
+      <p class="text-slate-600">conform-IT vous remercie pour cette demande de contact.</p>
+      <p class="mt-2 text-slate-600">On revient vers vous très rapidement.</p>
+      <div class="mt-8">
+        <Button href="/" variant="secondary">Retour à l'accueil</Button>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

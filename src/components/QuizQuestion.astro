@@ -1,0 +1,36 @@
+---
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  name: string;
+  legend: string;
+  required?: boolean;
+  options: Option[];
+}
+
+const { name, legend, required = true, options } = Astro.props;
+---
+
+<fieldset class="border-0 p-0">
+  <legend class="text-sm font-semibold text-slate-900">
+    {legend}
+    {required && <span aria-hidden="true" class="text-terracotta-600"> *</span>}
+  </legend>
+  <div class="mt-2 space-y-2">
+    {options.map((option, i) => (
+      <label class="flex items-center gap-2 text-sm text-slate-600">
+        <input
+          type="radio"
+          name={name}
+          value={option.value}
+          required={required && i === 0}
+          class="h-4 w-4 border-slate-300 text-accent-600 focus:ring-accent-500"
+        />
+        {option.label}
+      </label>
+    ))}
+  </div>
+</fieldset>

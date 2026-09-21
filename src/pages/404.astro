@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+---
+
+<BaseLayout title="Page introuvable" description="Cette page n'existe pas ou plus." noindex>
+  <Section as="h1" tone="white" eyebrow="Erreur 404" title="Cette page n'existe pas ou plus">
+    <div class="mx-auto max-w-xl text-center">
+      <p class="text-slate-600">
+        La page que vous recherchez a peut-être changé d'adresse ou n'existe plus. Voici quelques points de
+        départ utiles :
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <Button href="/" variant="primary">Retour à l'accueil</Button>
+        <Button href="/formations/" variant="secondary">Voir le catalogue</Button>
+        <Button href="/plan-du-site/" variant="ghost">Voir le plan du site</Button>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

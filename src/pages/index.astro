@@ -1,0 +1,357 @@
+---
+import fs from "node:fs";
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import Button from "../components/Button.astro";
+import { themes } from "../data/themes";
+
+// Hero : grille 3×3 des 9 thématiques (badge + libellé, chaque case = lien vers la page thème).
+// Les 3 mises en avant (formation de masse) passent en tête + halo ; les 6 autres suivent, en retrait.
+// Au survol/focus d'une case : le résumé de la thématique s'affiche sous la grille.
+const heroPrioritaires = ["intelligence-artificielle", "rgpd", "cybersecurite"];
+const heroBadges = [
+  ...heroPrioritaires,
+  ...themes.map((t) => t.slug).filter((s) => !heroPrioritaires.includes(s)),
+].map((slug) => {
+  const t = themes.find((x) => x.slug === slug)!;
+  return { slug, nav: t.nav, resume: t.resume, highlighted: heroPrioritaires.includes(slug) };
+});
+
+// Badges de l'accueil servis en `background-image` (data-URI SVG dans le <style>) plutôt qu'en
+// 9 requêtes <img> : gagne 9 requêtes EcoIndex (les badges du hero sont au-dessus de la ligne
+// de flottaison). SVG minifié + <title>/<desc> retirés (décoratif, `aria-hidden`).
+function svgToDataUri(svg: string): string {
+  const min = svg
+    .replace(/<title>[\s\S]*?<\/title>/g, "")
+    .replace(/<desc>[\s\S]*?<\/desc>/g, "")
+    .replace(/\s*\n\s*/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim()
+    .replace(/%/g, "%25")
+    .replace(/#/g, "%23")
+    .replace(/</g, "%3C")
+    .replace(/>/g, "%3E")
+    .replace(/"/g, "'");
+  return `data:image/svg+xml,${min}`;
+}
+const badgeCss =
+  ".badge-bg{display:block;width:100%;background-size:contain;background-repeat:no-repeat;background-position:center;aspect-ratio:680/720}" +
+  themes
+    .map(
+      (t) =>
+        `.badge-bg--${t.slug}{background-image:url("${svgToDataUri(
+          fs.readFileSync(`public/badges/${t.slug}.svg`, "utf-8"),
+        )}")}`,
+    )
+    .join("");
+
+const tunnel = [
+  {
+    step: "01",
+    title: "Échange initial — gratuit",
+    text: "On fait le point sur vos obligations et vos priorités, sans engagement.",
+    href: "/contact/",
+  },
+  {
+    step: "02",
+    title: "Formation complète + outils de pilotage inclus",
+    text: "Tout le catalogue pour tous vos collaborateurs, les pré-diagnostics et le registre de preuve exportable.",
+    href: "/offre/",
+  },
+  {
+    step: "03",
+    title: "Accompagnement en option",
+    text: "Ateliers sur site, ou mission de mise en œuvre sur devis (registre RGPD, cartographie IA), quand il faut aller au-delà de l'usage courant des outils.",
+    href: "/offre/",
+  },
+];
+
+const publics = [
+  { titre: "Dirigeants", texte: "Quoi déployer, quoi encadrer, quoi refuser." },
+  { titre: "Usagers", texte: "Ce qu'on peut faire, comment vérifier." },
+  { titre: "Managers", texte: "Valider les usages de son service, arbitrer." },
+  { titre: "Créateurs", texte: "Concevoir assistants et automatisations sans exposer l'entreprise." },
+];
+
+const expertiseArticles = (await getCollection("blog", (post) => post.data.featured && !post.data.hidden)).sort((a, b) => {
+  const orderA = a.data.order;
+  const orderB = b.data.order;
+  if (orderA !== undefined && orderB !== undefined) return orderA - orderB;
+  if (orderA !== undefined) return -1;
+  if (orderB !== undefined) return 1;
+  return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+});
+
+const siteUrl = Astro.site!.href;
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "conform-IT",
+  url: siteUrl,
+  inLanguage: "fr-FR",
+  publisher: { "@type": "Organization", name: "conform-IT" },
+};
+// Le catalogue de formations, listé pour les moteurs (une entrée par thématique).
+const catalogueLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Catalogue de formations à la conformité conform-IT",
+  itemListElement: themes.map((theme, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    url: new URL(`/formations/${theme.slug}/`, siteUrl).href,
+    name: theme.titre,
+  })),
+};
+---
+
+<BaseLayout
+  title="Formez vos équipes. Pilotez votre conformité. Prouvez-le."
+  description="Formation à la conformité pour les PME : RGPD, IA, cybersécurité et 6 autres thématiques. Badges horodatés et registre exportable inclus."
+  jsonLd={[websiteLd, catalogueLd]}
+>
+  <!-- Hero -->
+  <section class="starry bg-accent-900 text-cream-50">
+    <div class="mx-auto max-w-6xl px-6 py-20 sm:py-28">
+      <div class="grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,1fr)_25rem] lg:items-center">
+        <div class="max-w-2xl">
+          <p class="text-sm font-semibold uppercase tracking-wide text-terracotta-400">conform-IT</p>
+          <h1 class="mt-3 text-4xl font-bold leading-tight sm:text-5xl">
+            Formez vos équipes. Pilotez votre conformité. Prouvez-le.
+          </h1>
+          <p class="mt-6 max-w-xl text-lg text-slate-200">
+            Tous vos salariés se forment en ligne au RGPD, à l'IA, à la cybersécurité — et au reste du
+            catalogue. Vous gardez la preuve : badges horodatés et registre exportable.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <Button href="/offre/" variant="primary">Voir la grille tarifaire</Button>
+            <Button href="/contact/" variant="ghost-dark">Nous contacter</Button>
+          </div>
+        </div>
+
+        <div class="mx-auto w-full max-w-sm lg:max-w-none">
+          <p class="text-xs font-semibold uppercase tracking-wide text-terracotta-400">Le catalogue — 9 thématiques</p>
+          <ul class="mt-4 grid grid-cols-3 gap-x-3 gap-y-5 sm:gap-x-4">
+            {heroBadges.map((b) => (
+              <li>
+                <a
+                  href={`/formations/${b.slug}/`}
+                  data-theme={b.slug}
+                  data-resume={b.resume}
+                  class="hero-theme group flex flex-col items-center gap-2 text-center"
+                >
+                  <span
+                    aria-hidden="true"
+                    class:list={[
+                      "badge-bg w-full transition duration-200 group-hover:scale-105 group-hover:brightness-110",
+                      `badge-bg--${b.slug}`,
+                      b.highlighted
+                        ? "[filter:drop-shadow(0_0_12px_rgba(224,122,95,0.55))]"
+                        : "scale-90 opacity-60 group-hover:opacity-100",
+                    ]}
+                  />
+                  <span class="text-xs font-medium leading-tight text-slate-300 transition-colors group-hover:text-terracotta-400 group-focus-visible:text-terracotta-400">
+                    {b.nav}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p
+            id="hero-theme-resume"
+            class="mt-5 min-h-[6rem] text-sm leading-snug text-slate-300 sm:min-h-[5rem]"
+          >
+            Survolez une thématique pour en voir le résumé.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bandeau -->
+  <div class="border-y border-slate-100 bg-cream-100">
+    <div class="mx-auto max-w-6xl px-6 py-4 text-center">
+      <a href="/offre/" class="text-sm font-semibold text-slate-900 hover:text-accent-600">
+        Un forfait unique : formation, pilotage et preuve inclus. <span class="text-accent-600 underline">Voir la grille tarifaire →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Arguments -->
+  <Section tone="white" eyebrow="Pourquoi conform-IT" title="FP² — Former, piloter, prouver — dans cet ordre">
+    <Fragment slot="title">
+      FP² — <span class="text-terracotta-600">F</span>ormer, <span class="text-terracotta-600">p</span>iloter, <span class="text-terracotta-600">p</span>rouver — dans cet ordre
+    </Fragment>
+    <div class="grid gap-8 sm:grid-cols-3">
+      <div>
+        <h3 class="text-base font-semibold text-slate-900">1. Former tout le monde, vraiment.</h3>
+        <p class="mt-2 text-sm text-slate-600">
+          Le RGPD, l'IA et la cybersécurité pour l'ensemble de vos salariés — puis les six autres thématiques
+          du catalogue, en parcours courts adaptés à chaque métier. Un seul accès, tous les collaborateurs.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-base font-semibold text-slate-900">2. Piloter, une fois les équipes formées.</h3>
+        <p class="mt-2 text-sm text-slate-600">
+          Le prolongement naturel de la formation : pré-diagnostics, tests de maturité et suivi vous montrent
+          où en est chaque sujet et ce qui reste à traiter.
+        </p>
+      </div>
+      <div>
+        <h3 class="text-base font-semibold text-slate-900">3. Garder la preuve pour le jour du contrôle.</h3>
+        <p class="mt-2 text-sm text-slate-600">
+          Chaque formation validée génère un badge horodaté, consolidé dans un registre que vous exportez
+          vous-même. Le jour d'un contrôle, d'un appel d'offres ou d'une question client, la réponse est déjà
+          prête.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Les quatre publics -->
+  <Section tone="cream" eyebrow="Notre méthode" title="Quatre publics, quatre parcours" description="La plupart des réglementations demandent des mesures adaptées au rôle de chacun. C'est exactement la façon dont nos parcours sont construits.">
+    <div class="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(150px,1fr))]">
+      {publics.map((p) => (
+        <div class="rounded-2xl bg-cream-50 p-5">
+          <h3 class="text-sm font-semibold text-slate-900">{p.titre}</h3>
+          <p class="mt-2 text-sm text-slate-600">{p.texte}</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <!-- Tunnel simplifié -->
+  <Section tone="white" eyebrow="Comment ça se passe" title="De la formation à la preuve, en trois temps">
+    <ol class="grid gap-4 md:grid-cols-3">
+      {tunnel.map((item) => (
+        <li>
+          <a href={item.href} class="flex h-full flex-col rounded-2xl border border-slate-200 bg-cream-50 p-6 shadow-sm transition-shadow hover:shadow-md">
+            <span class="text-sm font-bold text-terracotta-600">{item.step}</span>
+            <h3 class="mt-2 text-base font-semibold text-slate-900">{item.title}</h3>
+            <p class="mt-2 text-sm text-slate-600">{item.text}</p>
+          </a>
+        </li>
+      ))}
+    </ol>
+    <div class="mt-8 text-center">
+      <Button href="/formations/" variant="ghost">Voir le catalogue complet</Button>
+    </div>
+  </Section>
+
+  <!-- Outils -->
+  <Section tone="cream" eyebrow="Et ensuite" title="Une fois vos équipes formées, pilotez">
+    <p class="mx-auto max-w-2xl text-center text-slate-600">
+      Le prolongement de la formation : des outils que nous avons construits et mis à disposition
+      gratuitement —{" "}
+      <a href="/service-en-ligne/outil-qualif-ia-pour-dirigeants/" class="font-semibold text-accent-600 hover:underline">test de maturité IA</a>,
+      pré-qualifications NIS2 et DORA, test d'accessibilité RGAA, pré-diagnostic RGPD. Pour situer chaque
+      sujet et prioriser la suite.
+    </p>
+    <div class="mt-6 text-center">
+      <Button href="/service-en-ligne/" variant="ghost">Découvrir les outils</Button>
+    </div>
+  </Section>
+
+  <!-- Preuves & expertise -->
+  {expertiseArticles.length > 0 && (
+    <Section tone="white" eyebrow="Notre expertise" title="Praticiens, pas commentateurs">
+      <div class="grid gap-6 md:grid-cols-2">
+        {expertiseArticles.map((post) => post && (
+          <a href={`/articles/${post.id}/`} class="flex flex-col rounded-2xl border border-slate-200 bg-cream-50 p-6 shadow-sm transition-shadow hover:shadow-md">
+            <time datetime={post.data.pubDate.toISOString()} class="text-xs font-medium text-slate-400">
+              {post.data.pubDate.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
+            </time>
+            <h3 class="mt-2 flex-1 text-base font-semibold text-slate-900">{post.data.title}</h3>
+            <span class="mt-4 text-sm font-semibold text-terracotta-600">Lire l'article →</span>
+          </a>
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <!-- Secondaire discret -->
+  <div class="border-y border-slate-100 bg-cream-50">
+    <div class="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-8 text-sm sm:flex-row sm:items-center sm:justify-center sm:gap-10">
+      <a href="/collectivites/" class="font-medium text-slate-500 hover:text-accent-600">Vous êtes une collectivité ? →</a>
+      <a href="/autres-conformites/" class="font-medium text-slate-500 hover:text-accent-600">NIS2, DORA, accessibilité ? →</a>
+    </div>
+  </div>
+
+  <!-- CTA final -->
+  <Section tone="navy" title="Prêt à équiper vos équipes ?">
+    <div class="flex flex-wrap justify-center gap-4">
+      <Button href="/offre/" variant="primary">Voir la grille tarifaire</Button>
+      <Button href="/contact/" variant="ghost-dark">Nous contacter</Button>
+    </div>
+  </Section>
+
+  <style is:inline set:html={badgeCss} slot="head"></style>
+  <style is:inline slot="head">
+    /* Transitions lentes pour l'allumage automatique (reprend l'effet de survol) */
+    .hero-theme .badge-bg { transition-duration: 1200ms; }
+    .hero-theme > span:last-child { transition-duration: 1200ms; }
+    .hero-theme.is-lit .badge-bg { scale: 1.05 !important; opacity: 1 !important; }
+    .hero-theme.is-lit > span:last-child { color: var(--color-terracotta-400) !important; }
+  </style>
+
+  <script is:inline>
+  // Hero : au survol/focus d'une case de la grille des 9 thématiques, affiche le résumé de
+  // la thématique (libellé en gras + texte) dans la zone sous la grille. Le zoom du badge et
+  // la couleur du libellé sont gérés en CSS (`group-hover:`).
+  (function () {
+    var resumeEl = document.getElementById("hero-theme-resume");
+    if (!resumeEl) return;
+    var defaultResume = resumeEl.textContent;
+
+    function esc(s) {
+      return String(s).replace(/[&<>"]/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+      });
+    }
+
+    var items = Array.prototype.slice.call(document.querySelectorAll(".hero-theme"));
+    var userActive = false; // survol/focus réel en cours : l'animation auto s'efface
+    var lit = null;
+
+    function show(el) {
+      resumeEl.innerHTML =
+        '<strong class="font-semibold text-terracotta-400">' +
+        esc(el.querySelector("span:last-child").textContent.trim()) +
+        "</strong> — " +
+        esc(el.dataset.resume || "");
+    }
+    function reset() { resumeEl.textContent = defaultResume; }
+    function unlight() {
+      if (lit) { lit.classList.remove("is-lit"); lit = null; reset(); }
+    }
+
+    items.forEach(function (el) {
+      el.addEventListener("mouseenter", function () { userActive = true; unlight(); show(el); });
+      el.addEventListener("mouseleave", function () { userActive = false; reset(); });
+      el.addEventListener("focusin", function () { userActive = true; unlight(); show(el); });
+      el.addEventListener("focusout", function () { userActive = false; reset(); });
+    });
+
+    // Animation automatique : une thématique à la fois « s'allume » au hasard, lentement,
+    // comme si elle était survolée. Désactivée si l'utilisateur préfère réduire les animations.
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var last = -1;
+    function step() {
+      unlight();
+      if (userActive || document.hidden) return;
+      var i;
+      do { i = Math.floor(Math.random() * items.length); } while (items.length > 1 && i === last);
+      last = i;
+      lit = items[i];
+      lit.classList.add("is-lit");
+      show(lit);
+    }
+    // Cycle : allumée ~3,2 s, puis courte pause avant la suivante.
+    setInterval(function () {
+      if (lit) unlight(); else step();
+    }, 3200);
+    setTimeout(step, 1500);
+  })();
+  </script>
+</BaseLayout>

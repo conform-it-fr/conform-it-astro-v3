@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Section from "../../../components/Section.astro";
+import QuizForm from "../../../components/QuizForm.astro";
+import QuizGroup from "../../../components/QuizGroup.astro";
+import QuizQuestion from "../../../components/QuizQuestion.astro";
+
+const OUI_NON = [
+  { value: "0", label: "Oui" },
+  { value: "2", label: "Non" },
+];
+const OUI_PARTIEL_NON = [
+  { value: "0", label: "Oui" },
+  { value: "1", label: "Partiellement" },
+  { value: "2", label: "Non" },
+];
+---
+
+<BaseLayout
+  title="Pré-diagnostic RGPD"
+  description="Répondez à 12 questions et obtenez une première évaluation de la maturité de votre organisation au regard du Règlement général sur la protection des données (RGPD)."
+>
+  <Section as="h1"
+    tone="white"
+    eyebrow="Pré-diagnostic gratuit · 12 questions · 5 minutes"
+    title="Où en est votre organisation avec le RGPD ?"
+    description="12 questions pour situer votre maturité au regard du Règlement général sur la protection des données : gouvernance, licéité des traitements, sécurité, sous-traitance, violations de données."
+  >
+    <QuizForm
+      formId="rgpdForm"
+      endpoint="https://audit.conform-it.fr/rgpd/prequal_rgpd.php"
+      submitLabel="Obtenir mon résultat RGPD →"
+      theme="rgpd"
+      contexte="Le Règlement (UE) 2016/679 (RGPD) s'applique à toute organisation qui traite des données personnelles, quelle que soit sa taille. La CNIL contrôle le respect des principes — licéité, minimisation, sécurité, durées de conservation — et la capacité à en rendre compte. Ce pré-diagnostic ne remplace pas un audit de conformité."
+    >
+      <QuizGroup title="Gouvernance des données personnelles" range="Q1 – Q3">
+        <QuizQuestion name="responsable" legend="Q1. Une personne ou une fonction est-elle identifiée comme responsable de la protection des données (DPO ou référent RGPD) ?" options={OUI_NON} />
+
+        <QuizQuestion name="regles" legend="Q2. Des règles internes (politique, charte, procédures) encadrent-elles le traitement des données personnelles ?" options={OUI_PARTIEL_NON} />
+
+        <QuizQuestion name="sensibilisation" legend="Q3. Les équipes sont-elles sensibilisées au RGPD et aux bonnes pratiques de protection des données ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "1", label: "Occasionnellement" },
+          { value: "2", label: "Non" },
+        ]} />
+      </QuizGroup>
+
+      <QuizGroup title="Collecte et licéité des traitements" range="Q4 – Q6">
+        <QuizQuestion name="collecte" legend="Q4. Votre organisation tient-elle un registre ou un inventaire des données personnelles qu'elle traite (clients, usagers, salariés, partenaires) ?" options={OUI_PARTIEL_NON} />
+
+        <QuizQuestion name="transparence" legend="Q5. Les formulaires et services numériques informent-ils clairement les personnes de l'usage fait de leurs données (mentions d'information) ?" options={OUI_PARTIEL_NON} />
+
+        <QuizQuestion name="minimisation" legend="Q6. La collecte est-elle limitée aux données réellement nécessaires à chaque finalité (principe de minimisation) ?" options={OUI_PARTIEL_NON} />
+      </QuizGroup>
+
+      <QuizGroup title="Sécurité et conservation" range="Q7 – Q9">
+        <QuizQuestion name="stockage" legend="Q7. Les données personnelles sont-elles stockées dans des outils identifiés et sécurisés ?" options={OUI_PARTIEL_NON} />
+
+        <QuizQuestion name="acces" legend="Q8. Les accès aux données personnelles sont-ils limités aux personnes qui en ont réellement besoin ?" options={OUI_PARTIEL_NON} />
+
+        <QuizQuestion name="conservation" legend="Q9. Des durées de conservation sont-elles définies pour les données personnelles, avec suppression ou archivage à l'échéance ?" options={OUI_PARTIEL_NON} />
+      </QuizGroup>
+
+      <QuizGroup title="Sites, cookies et sous-traitants" range="Q10 – Q11">
+        <QuizQuestion name="sites" legend="Q10. Vos sites internet ont-ils été analysés au regard du RGPD (cookies et traceurs, données collectées, consentement) ?" options={OUI_PARTIEL_NON} />
+
+        <QuizQuestion name="prestataires" legend="Q11. Les sous-traitants qui traitent des données personnelles pour votre compte sont-ils identifiés et encadrés par un contrat conforme au RGPD ?" options={OUI_PARTIEL_NON} />
+      </QuizGroup>
+
+      <QuizGroup title="Violations de données" range="Q12">
+        <QuizQuestion name="incident" legend="Q12. Existe-t-il une procédure en cas de violation de données personnelles (détection, réaction, notification à la CNIL sous 72 h) ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "1", label: "En préparation" },
+          { value: "2", label: "Non" },
+        ]} />
+      </QuizGroup>
+    </QuizForm>
+  </Section>
+</BaseLayout>

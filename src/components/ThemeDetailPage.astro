@@ -1,0 +1,132 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "./Section.astro";
+import Button from "./Button.astro";
+import ThemeBadge from "./ThemeBadge.astro";
+import { themes, getTheme } from "../data/themes";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const theme = getTheme(slug);
+if (!theme) throw new Error(`Thème inconnu : ${slug}`);
+
+const autres = themes.filter((t) => t.slug !== theme.slug);
+
+const courseLd = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: `Formation ${theme.titre}`,
+  description: theme.resume,
+  url: new URL(`/formations/${theme.slug}/`, Astro.site).href,
+  inLanguage: "fr-FR",
+  provider: {
+    "@type": "Organization",
+    name: "conform-IT",
+    url: Astro.site?.href,
+  },
+  teaches: theme.objectifs,
+  about: theme.titre,
+};
+---
+
+<BaseLayout title={`${theme.titre} — formation à la conformité`} description={theme.resume} jsonLd={courseLd}>
+  <Section as="h1" tone="white" eyebrow="Catalogue de formations" title={theme.titre} description={theme.resume}>
+    <div class="mx-auto max-w-3xl">
+      <div class="mx-auto -mt-2 mb-6 w-36 sm:w-40" aria-hidden="true">
+        <ThemeBadge slug={theme.slug} />
+      </div>
+
+      <p class="mb-8 text-sm">
+        <a href="/formations/" class="font-semibold text-terracotta-600 hover:underline">← Retour au catalogue</a>
+      </p>
+
+      {theme.outil && (
+        <a
+          href={theme.outil.href}
+          class="mb-10 flex flex-col gap-2 rounded-2xl border-2 border-terracotta-400 bg-terracotta-50 p-5 transition-colors hover:bg-terracotta-100 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <span>
+            <span class="block text-xs font-semibold uppercase tracking-wide text-terracotta-600">Le prolongement de la formation</span>
+            <span class="mt-1 block text-sm text-slate-700">{theme.outil.intro}</span>
+            <span class="mt-1 block text-sm text-slate-500">{theme.outil.label} — gratuit, {theme.outil.duree}</span>
+          </span>
+          <span class="shrink-0 text-sm font-semibold text-terracotta-600">Démarrer →</span>
+        </a>
+      )}
+
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-terracotta-600">Pourquoi se former</h2>
+      <p class="mt-2 text-slate-600">{theme.obligation}</p>
+
+      <h2 class="mt-10 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Objectifs du parcours</h2>
+      <ul class="mt-3 space-y-2 text-slate-700">
+        {theme.objectifs.map((item) => (
+          <li class="flex gap-2">
+            <svg aria-hidden="true" focusable="false" class="mt-1 h-4 w-4 flex-none text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+            </svg>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+
+      <h2 class="mt-10 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Ce que couvre le parcours</h2>
+      <ul class="mt-3 list-disc space-y-1.5 pl-5 text-slate-600">
+        {theme.couvre.map((item) => <li>{item}</li>)}
+      </ul>
+
+      <div class="mt-10 grid gap-6 rounded-2xl border border-slate-200 bg-cream-50 p-6 sm:grid-cols-2">
+        <div>
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-terracotta-600">Pour qui</h2>
+          <p class="mt-2 text-sm text-slate-600">{theme.pour}</p>
+        </div>
+        <div>
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-terracotta-600">Format &amp; preuve</h2>
+          <p class="mt-2 text-sm text-slate-600">
+            {theme.format} Chaque parcours validé génère un <strong class="text-slate-900">badge horodaté</strong>,
+            consolidé dans votre <strong class="text-slate-900">registre exportable</strong>.
+          </p>
+        </div>
+      </div>
+
+      {theme.liens && theme.liens.length > 0 && (
+        <div class="mt-8">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-terracotta-600">Ressources liées</h2>
+          <ul class="mt-3 space-y-2">
+            {theme.liens.map((lien) => (
+              <li>
+                <a href={lien.href} class="font-semibold text-accent-600 hover:underline">{lien.label} →</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div class="mt-10 rounded-2xl border border-slate-200 bg-cream-100 p-6 text-sm text-slate-600">
+        <strong class="text-slate-900">Ce thème est inclus dans le forfait plateforme</strong>, avec l'ensemble
+        du catalogue, pour tous vos collaborateurs.
+        <a href="/offre/" class="font-semibold text-terracotta-600 hover:underline"> Voir la grille tarifaire →</a>
+      </div>
+    </div>
+  </Section>
+
+  <Section tone="cream" eyebrow="Catalogue" title="Les autres thématiques">
+    <div class="grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
+      {autres.map((t) => (
+        <a href={`/formations/${t.slug}/`} class="flex items-center gap-3 rounded-xl border border-slate-200 bg-cream-50 px-4 py-3 text-sm font-semibold text-slate-800 transition-colors hover:border-terracotta-400 hover:text-terracotta-600">
+          <span class="w-9 flex-none" aria-hidden="true"><ThemeBadge slug={t.slug} /></span>
+          <span>{t.titre}</span>
+        </a>
+      ))}
+    </div>
+  </Section>
+
+  <Section tone="navy" title="Voir les tarifs et démarrer">
+    <div class="flex flex-wrap justify-center gap-4">
+      <Button href="/offre/" variant="primary">Voir la grille tarifaire</Button>
+      <Button href="/contact/" variant="ghost-dark">Nous contacter</Button>
+    </div>
+  </Section>
+</BaseLayout>

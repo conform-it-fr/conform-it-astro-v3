@@ -1,0 +1,282 @@
+---
+import QuizQuestion from "./QuizQuestion.astro";
+import type { Prediag } from "../data/prediagnostics";
+
+interface Props {
+  config: Prediag;
+}
+
+const { config } = Astro.props;
+
+const flat = config.groupes.flatMap((g) => g.questions);
+const totalQuestions = flat.length;
+
+// Palettes par niveau — écrites en toutes lettres ici pour que Tailwind génère les classes.
+const TONS = {
+  ok: { header: "border-green-200 bg-green-50", tag: "text-green-700", gauge: "bg-gradient-to-r from-green-400 to-green-600" },
+  info: { header: "border-sky-200 bg-sky-50", tag: "text-sky-700", gauge: "bg-gradient-to-r from-sky-400 to-sky-600" },
+  warn: { header: "border-amber-200 bg-amber-50", tag: "text-amber-700", gauge: "bg-gradient-to-r from-amber-300 to-amber-500" },
+  alert: { header: "border-red-200 bg-red-50", tag: "text-red-700", gauge: "bg-gradient-to-r from-red-400 to-red-600" },
+};
+
+const TAGS = { ok: "MAÎTRISÉ", info: "À CONSOLIDER", warn: "PRIORITAIRE", alert: "URGENT" };
+
+const clientConfig = {
+  slug: config.slug,
+  theme: config.theme,
+  titre: config.titre,
+  contactType: config.contactType,
+  questions: flat.map((q) => {
+    const max = Math.max(...q.options.map((o) => o.score));
+    return {
+      id: q.id,
+      scores: q.options.map((o) => o.score),
+      max,
+      constat: q.constat ?? null,
+      constatSeuil: q.constatSeuil ?? max,
+    };
+  }),
+  resultats: config.resultats,
+  tons: TONS,
+  tags: TAGS,
+};
+---
+
+<div class="mx-auto max-w-3xl">
+  <div id="sa-progress-wrap" class="mb-8 flex items-center gap-4">
+    <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+      <div id="sa-progress" class="h-full w-0 rounded-full bg-accent-600 transition-all duration-300"></div>
+    </div>
+    <p id="sa-progress-label" class="whitespace-nowrap text-xs font-semibold text-slate-500">0 / {totalQuestions} réponses</p>
+  </div>
+
+  <form id="sa-form" novalidate class="space-y-6">
+    {config.groupes.map((groupe) => (
+      <div class="rounded-2xl border border-slate-200 bg-cream-50 shadow-sm">
+        <div class="border-b border-slate-200 bg-cream-100 px-6 py-4">
+          <h2 class="text-sm font-semibold text-slate-900">{groupe.titre}</h2>
+        </div>
+        <div class="space-y-7 px-6 py-6">
+          {groupe.questions.map((q) => (
+            <div data-qblock={q.id}>
+              <QuizQuestion name={q.id} legend={q.legend} options={q.options.map((o, i) => ({ value: String(i), label: o.label }))} />
+              <p data-error={q.id} class="mt-2 hidden text-xs font-medium text-terracotta-600">Veuillez sélectionner une réponse.</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    <div class="pt-2 text-center">
+      <button
+        type="button"
+        id="sa-compute"
+        class="inline-flex items-center justify-center gap-2 rounded-full bg-terracotta-600 px-8 py-4 text-base font-bold text-cream-50 transition-colors hover:bg-terracotta-700"
+      >
+        Voir mon résultat →
+      </button>
+      <p class="mt-3 text-xs text-slate-400">Vos réponses sont traitées dans votre navigateur — rien n'est transmis.</p>
+    </div>
+  </form>
+
+  <div id="sa-results" class="mt-12 hidden">
+    <div id="sa-result-header" class="rounded-2xl border p-8 text-center">
+      <p id="sa-tag" class="text-xs font-bold uppercase tracking-wider"></p>
+      <h2 id="sa-title" class="mt-2 text-2xl font-bold text-slate-900">Votre résultat</h2>
+      <p id="sa-message" class="mx-auto mt-2 max-w-md text-sm text-slate-600"></p>
+      <div class="mx-auto mt-6 max-w-sm">
+        <div class="h-2.5 overflow-hidden rounded-full bg-slate-200">
+          <div id="sa-gauge" class="h-full w-0 rounded-full transition-all duration-700"></div>
+        </div>
+        <div class="mt-1.5 flex justify-between text-[10px] font-semibold text-slate-400">
+          <span>Maîtrisé</span><span>À consolider</span><span>Prioritaire</span><span>Urgent</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="sa-constats-wrap" class="mt-6 hidden rounded-2xl border border-slate-200 bg-cream-50 p-6 shadow-sm">
+      <h3 class="text-xs font-bold uppercase tracking-wide text-slate-500">Points d'attention</h3>
+      <ul id="sa-constats" class="mt-4 space-y-2.5 text-sm text-slate-700"></ul>
+    </div>
+
+    <div class="mt-6 rounded-2xl border border-slate-200 bg-cream-50 p-6 shadow-sm">
+      <h3 class="text-xs font-bold uppercase tracking-wide text-slate-500">Recommandations</h3>
+      <ol id="sa-reco" class="mt-4 space-y-3 text-sm text-slate-700"></ol>
+    </div>
+
+    <div class="mt-6 flex flex-col gap-4 rounded-2xl bg-accent-900 p-6 text-cream-50 sm:flex-row sm:items-center">
+      <div class="flex-1">
+        <h3 class="text-base font-semibold">Prochaine étape</h3>
+        <p class="mt-1 text-sm text-slate-300">Faites le point avec nous, ou formez vos équipes sur ce sujet.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a id="sa-cta" href="/contact/" class="inline-flex items-center justify-center rounded-full bg-terracotta-600 px-6 py-3 text-sm font-semibold text-cream-50 transition-colors hover:bg-terracotta-700">Être recontacté(e)</a>
+        <button type="button" id="sa-reset" class="rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-cream-50 ring-1 ring-inset ring-slate-600 transition-colors hover:bg-white/20">Recommencer</button>
+      </div>
+    </div>
+
+    <p class="mx-auto mt-8 max-w-2xl text-center text-xs text-slate-400">
+      Cette auto-évaluation est fournie à titre indicatif et ne constitue pas un avis juridique.
+    </p>
+  </div>
+</div>
+
+<script id="sa-config" type="application/json" is:inline set:html={JSON.stringify(clientConfig)}></script>
+
+<script>
+  type Reco = { titre: string; message: string; reco: string[] };
+  type Cfg = {
+    slug: string;
+    theme: string;
+    titre: string;
+    contactType: string;
+    questions: { id: string; scores: number[]; max: number; constat: string | null; constatSeuil: number }[];
+    resultats: Record<string, Reco>;
+    tons: Record<string, { header: string; tag: string; gauge: string }>;
+    tags: Record<string, string>;
+  };
+
+  const raw = document.getElementById("sa-config");
+  if (raw && raw.textContent) {
+    init(JSON.parse(raw.textContent) as Cfg);
+  }
+
+  function init(cfg: Cfg) {
+    const form = document.getElementById("sa-form") as HTMLFormElement | null;
+    const results = document.getElementById("sa-results");
+    const compute = document.getElementById("sa-compute");
+    const reset = document.getElementById("sa-reset");
+    if (!form || !results || !compute || !reset) return;
+
+    const total = cfg.questions.length;
+    const answers: Record<string, number> = {};
+
+    function updateProgress() {
+      const done = Object.keys(answers).length;
+      const fill = document.getElementById("sa-progress");
+      const label = document.getElementById("sa-progress-label");
+      if (fill) fill.style.width = (done / total) * 100 + "%";
+      if (label) label.textContent = `${done} / ${total} réponses`;
+    }
+
+    form.addEventListener("change", (event) => {
+      const target = event.target as HTMLInputElement;
+      if (target.type !== "radio") return;
+      answers[target.name] = parseInt(target.value, 10);
+      document.querySelector(`[data-error="${target.name}"]`)?.classList.add("hidden");
+      updateProgress();
+    });
+
+    compute.addEventListener("click", () => {
+      let firstMissing: Element | null = null;
+      for (const q of cfg.questions) {
+        const err = document.querySelector(`[data-error="${q.id}"]`);
+        if (answers[q.id] === undefined) {
+          err?.classList.remove("hidden");
+          if (!firstMissing) firstMissing = document.querySelector(`[data-qblock="${q.id}"]`);
+        } else {
+          err?.classList.add("hidden");
+        }
+      }
+      if (firstMissing) {
+        firstMissing.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      render(cfg, answers);
+    });
+
+    reset.addEventListener("click", () => {
+      for (const key of Object.keys(answers)) delete answers[key];
+      form.reset();
+      updateProgress();
+      results.classList.add("hidden");
+      form.classList.remove("hidden");
+      document.getElementById("sa-progress-wrap")?.classList.remove("hidden");
+      form.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  function render(cfg: Cfg, answers: Record<string, number>) {
+    let score = 0;
+    let max = 0;
+    const constats: string[] = [];
+
+    for (const q of cfg.questions) {
+      const choice = answers[q.id];
+      const value = q.scores[choice] ?? 0;
+      score += value;
+      max += q.max;
+      if (q.constat && value >= q.constatSeuil) constats.push(q.constat);
+    }
+
+    const ratio = max > 0 ? score / max : 0;
+    const ton = ratio <= 0.2 ? "ok" : ratio <= 0.45 ? "info" : ratio <= 0.7 ? "warn" : "alert";
+    const palette = cfg.tons[ton];
+    const contenu = cfg.resultats[ton];
+
+    const header = document.getElementById("sa-result-header")!;
+    header.className = "rounded-2xl border p-8 text-center " + palette.header;
+    const tagEl = document.getElementById("sa-tag")!;
+    tagEl.className = "text-xs font-bold uppercase tracking-wider " + palette.tag;
+    tagEl.textContent = cfg.tags[ton];
+    document.getElementById("sa-title")!.textContent = contenu.titre;
+    document.getElementById("sa-message")!.textContent = contenu.message;
+
+    const gauge = document.getElementById("sa-gauge")!;
+    gauge.className = "h-full rounded-full transition-all duration-700 " + palette.gauge;
+    setTimeout(() => {
+      gauge.style.width = Math.min(100, Math.max(6, Math.round(ratio * 100))) + "%";
+    }, 50);
+
+    const constatsWrap = document.getElementById("sa-constats-wrap")!;
+    const constatsList = document.getElementById("sa-constats")!;
+    if (constats.length > 0) {
+      constatsWrap.classList.remove("hidden");
+      constatsList.innerHTML = constats
+        .slice(0, 6)
+        .map(
+          (c) =>
+            `<li class="flex gap-2"><span aria-hidden="true" class="mt-1 h-1.5 w-1.5 flex-none rounded-full bg-terracotta-500"></span><span>${escapeHtml(c)}</span></li>`,
+        )
+        .join("");
+    } else {
+      constatsWrap.classList.add("hidden");
+    }
+
+    const reco = [...contenu.reco, `Former vos équipes sur ce sujet`];
+    document.getElementById("sa-reco")!.innerHTML = reco
+      .map((r, i) => {
+        const isLast = i === reco.length - 1;
+        const label = isLast
+          ? `<a href="/formations/${cfg.theme}/" class="font-semibold text-accent-600 hover:underline">${escapeHtml(r)} →</a>`
+          : escapeHtml(r);
+        return `<li class="flex gap-3"><span class="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-accent-600 text-xs font-bold text-cream-50">${i + 1}</span><span>${label}</span></li>`;
+      })
+      .join("");
+
+    const message = [
+      `Suite au « ${cfg.titre} » réalisé sur le site :`,
+      `- Niveau : ${cfg.tags[ton]} — ${contenu.titre}`,
+      `- Score : ${score} / ${max}`,
+      "",
+      "Je souhaite être recontacté(e) à ce sujet.",
+    ].join("\n");
+    const params = new URLSearchParams({
+      type: cfg.contactType,
+      subject: `${cfg.titre} — niveau ${cfg.tags[ton]}`,
+      message,
+    });
+    (document.getElementById("sa-cta") as HTMLAnchorElement).href = "/contact/?" + params.toString();
+
+    const form = document.getElementById("sa-form")!;
+    const results = document.getElementById("sa-results")!;
+    form.classList.add("hidden");
+    document.getElementById("sa-progress-wrap")?.classList.add("hidden");
+    results.classList.remove("hidden");
+    results.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function escapeHtml(s: string) {
+    return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
+  }
+</script>

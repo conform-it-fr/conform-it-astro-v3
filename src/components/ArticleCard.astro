@@ -1,0 +1,28 @@
+---
+import type { Post } from "../lib/blog";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const d = post.data;
+const dateLabel = d.pubDate.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+---
+
+<a
+  href={`/articles/${post.id}/`}
+  class="flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-cream-50 shadow-sm transition-shadow hover:shadow-md"
+>
+  {d.image && (
+    <img src={d.image} alt="" class="h-40 w-full object-cover" width="400" height="160" loading="lazy" />
+  )}
+  <div class="flex flex-1 flex-col p-6">
+    <p class="text-xs font-medium text-slate-400">
+      <time datetime={d.pubDate.toISOString()}>{dateLabel}</time>
+      {d.category && <> · <span class="font-semibold text-terracotta-600">{d.category}</span></>}
+    </p>
+    <h2 class="mt-2 text-lg font-semibold text-slate-900">{d.title}</h2>
+    <p class="mt-3 flex-1 text-sm leading-relaxed text-slate-600">{d.description}</p>
+  </div>
+</a>

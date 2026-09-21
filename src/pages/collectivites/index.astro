@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import Button from "../../components/Button.astro";
+---
+
+<BaseLayout
+  title="Collectivités & secteur public"
+  description="conform-IT accompagne les collectivités territoriales, établissements publics et organismes parapublics dans la maîtrise et la conformité de leurs environnements numériques."
+>
+  <Section as="h1"
+    tone="white"
+    eyebrow="Secteur public"
+    title="Un numérique public digne de confiance"
+    description="Les services publics numériques doivent répondre à des exigences fortes : fiabilité des plateformes, accessibilité pour tous les publics, sécurisation des informations et qualité des services en ligne."
+  >
+    <div class="mx-auto max-w-3xl">
+      <p class="text-slate-600">
+        conform-IT accompagne les collectivités territoriales, établissements publics et organismes parapublics
+        dans la maîtrise et la conformité de leurs environnements numériques, en apportant un appui
+        méthodologique et opérationnel aux équipes — dans le respect des procédures de marchés publics.
+      </p>
+
+      <h2 class="mt-8 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Diagnostic des services numériques</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-slate-600">
+        <li>analyse des sites internet, portails et services en ligne</li>
+        <li>identification des obligations applicables (accessibilité, information des usagers, transparence)</li>
+        <li>évaluation de la qualité d'usage et de l'accessibilité des services</li>
+        <li>identification des risques liés à la gestion des informations et aux usages numériques</li>
+      </ul>
+
+      <h2 class="mt-8 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Structuration de la gouvernance numérique</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-slate-600">
+        <li>clarification des rôles et responsabilités autour des services numériques</li>
+        <li>définition de bonnes pratiques pour la gestion des informations et des contenus</li>
+        <li>mise en place de procédures internes pour la gestion des services numériques</li>
+        <li>coordination entre directions métiers, services informatiques et communication</li>
+      </ul>
+
+      <h2 class="mt-8 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Mise en conformité et amélioration des services</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-slate-600">
+        <li>audit d'accessibilité des sites et services numériques (RGAA)</li>
+        <li>accompagnement à la mise en conformité des plateformes</li>
+        <li>assistance à la publication des documents obligatoires (déclaration d'accessibilité, schéma pluriannuel, plan d'actions)</li>
+        <li>recommandations d'amélioration de l'expérience utilisateur et de la qualité des services</li>
+      </ul>
+
+      <div class="mt-8 flex flex-wrap gap-4">
+        <Button href="/contact/?type=accompagnement_collectivite" variant="secondary">Demander un échange</Button>
+        <Button href="/service-en-ligne/formulaire-rgaa/" variant="ghost">Faire le test d'accessibilité gratuit</Button>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

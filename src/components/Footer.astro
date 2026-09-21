@@ -1,0 +1,91 @@
+---
+const legalLinks = [
+  { label: "Mentions légales", href: "/mentions-legales/" },
+  { label: "Politique de confidentialité", href: "/politique-de-confidentialite/" },
+  { label: "Politique de gestion des cookies", href: "/politique-de-gestion-des-cookies/" },
+  { label: "Plan du site", href: "/plan-du-site/" },
+  { label: "CGU", href: "/cgu/" },
+  { label: "Déclaration d'accessibilité", href: "/declaration-daccessibilite/" },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-slate-100 bg-slate-900 text-cream-100">
+  <div class="mx-auto max-w-6xl px-6 py-12">
+    <div class="grid gap-10 md:grid-cols-3">
+      <div>
+        <div class="flex items-center gap-3">
+          <!-- variante "derriere" (transparente) au footer : "confine" a un fond blanc opaque qui ferait un carré clair sur le bleu foncé -->
+          <img src="/conform-it-logo-maillage-derriere-60x60.webp" alt="" aria-hidden="true" width="60" height="60" />
+          <span class="flex flex-col leading-tight">
+            <span class="text-lg font-semibold text-cream-50">conform-IT</span>
+            <span class="text-xs font-medium text-slate-400">Former. Piloter. Prouver.</span>
+          </span>
+        </div>
+        <p class="mt-3 max-w-xs text-sm text-slate-400">
+          conform-IT forme vos équipes à la conformité — IA, RGPD, cybersécurité, NIS2 — et vous laisse un registre exportable qui prouve qui a été formé, quand et sur quoi.
+        </p>
+      </div>
+
+      <nav aria-labelledby="footer-nav-heading">
+        <h2 id="footer-nav-heading" class="text-sm font-semibold uppercase tracking-wide text-terracotta-400">Navigation</h2>
+        <ul class="mt-4 space-y-2 text-sm text-slate-300">
+          <li><a class="hover:text-terracotta-400" href="/formations/">Catalogue</a></li>
+          <li><a class="hover:text-terracotta-400" href="/offre/">Tarifs entreprises</a></li>
+          <li><a class="hover:text-terracotta-400" href="/service-en-ligne/">Nos outils</a></li>
+          <li>
+            <a
+              class="inline-flex items-center gap-1.5 hover:text-terracotta-400"
+              href="https://elearning.conform-it.fr"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Voir la plateforme (nouvel onglet)"
+            >
+              Voir la plateforme
+              <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+            </a>
+          </li>
+          <li><a class="hover:text-terracotta-400" href="/contact/?type=demande_demo&subject=Demande%20de%20d%C3%A9mo">Demander une démo</a></li>
+          <li><a class="hover:text-terracotta-400" href="/articles/">Notre blog</a></li>
+          <li><a class="hover:text-terracotta-400" href="/presentation-de-conform-it/">À propos</a></li>
+          <li><a class="hover:text-terracotta-400" href="/contact/">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <nav aria-labelledby="footer-autres-heading">
+          <h2 id="footer-autres-heading" class="text-sm font-semibold uppercase tracking-wide text-terracotta-400">Autres besoins</h2>
+          <ul class="mt-4 space-y-2 text-sm text-slate-300">
+            <li><a class="hover:text-terracotta-400" href="/collectivites/">Collectivités &amp; secteur public</a></li>
+            <li><a class="hover:text-terracotta-400" href="/autres-conformites/">NIS2, DORA, accessibilité</a></li>
+            <li><a class="hover:text-terracotta-400" href="/particuliers/">Particuliers</a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="footer-legal-heading">
+          <h2 id="footer-legal-heading" class="mt-6 text-sm font-semibold uppercase tracking-wide text-terracotta-400">Informations légales</h2>
+          <ul class="mt-4 space-y-2 text-sm text-slate-300">
+            {legalLinks.map((link) => (
+              <li><a class="hover:text-terracotta-400" href={link.href}>{link.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col gap-3 border-t border-slate-700 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} conform-IT – Tous droits réservés</p>
+      <div class="flex flex-wrap gap-2">
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-800 px-3 py-1">
+          EcoIndex
+          <span class="inline-flex h-4 w-4 items-center justify-center rounded-full bg-green-600 text-[0.65rem] font-bold leading-none text-white">A</span>
+        </span>
+        <a href="/declaration-daccessibilite/" class="rounded-full bg-slate-800 px-3 py-1 hover:text-terracotta-400">
+          Accessibilité : totalement conforme
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

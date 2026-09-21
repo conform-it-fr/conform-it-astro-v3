@@ -1,0 +1,702 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Section from "../../../components/Section.astro";
+import Button from "../../../components/Button.astro";
+import QuizQuestion from "../../../components/QuizQuestion.astro";
+import ThemeBadge from "../../../components/ThemeBadge.astro";
+
+const groups = [
+  {
+    title: "Utilisation de l'intelligence artificielle",
+    range: "Q1 – Q3",
+    questions: [
+      {
+        name: "q1",
+        legend: "Q1. Votre organisation utilise-t-elle des systèmes d'intelligence artificielle ?",
+        options: [
+          { value: "oui-interne", label: "Oui, développés en interne" },
+          { value: "oui-tiers", label: "Oui, solutions tierces" },
+          { value: "oui-les-deux", label: "Oui, les deux (développés en interne et solutions tierces)" },
+          { value: "non", label: "Non" },
+          { value: "sais-pas", label: "Je ne sais pas" },
+        ],
+      },
+      {
+        name: "q2",
+        legend: "Q2. Ces systèmes influencent-ils des décisions concernant des personnes (recrutement, crédit, santé, éducation) ?",
+        options: [
+          { value: "oui", label: "Oui" },
+          { value: "non", label: "Non" },
+          { value: "partiellement", label: "Partiellement" },
+        ],
+      },
+      {
+        name: "q3",
+        legend: "Q3. Vos systèmes d'IA interagissent-ils directement avec des utilisateurs (chatbot, assistant, recommandation automatisée) ?",
+        options: [
+          { value: "oui", label: "Oui" },
+          { value: "non", label: "Non" },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Nature des systèmes d'IA",
+    range: "Q4 – Q6",
+    questions: [
+      {
+        name: "q4",
+        legend: "Q4. Votre organisation utilise-t-elle des outils d'IA générative (ChatGPT, copilots, assistants rédactionnels, génération de code…) ?",
+        options: [
+          { value: "oui-regulier", label: "Oui, usage régulier" },
+          { value: "oui-ponctuel", label: "Oui, usage ponctuel" },
+          { value: "non", label: "Non" },
+          { value: "sais-pas", label: "Je ne sais pas" },
+        ],
+      },
+      {
+        name: "q5",
+        legend: "Q5. Utilisez-vous des technologies d'identification biométrique ou de reconnaissance faciale ?",
+        options: [
+          { value: "oui", label: "Oui" },
+          { value: "non", label: "Non" },
+          { value: "sais-pas", label: "Je ne sais pas" },
+        ],
+      },
+      {
+        name: "q6",
+        legend: "Q6. Votre organisation développe-t-elle ou intègre-t-elle des systèmes d'IA dans ses produits ou services ?",
+        options: [
+          { value: "developpement", label: "Oui, développement" },
+          { value: "integration", label: "Oui, intégration" },
+          { value: "utilisation", label: "Utilisation uniquement" },
+          { value: "non", label: "Non" },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Gouvernance IA",
+    range: "Q7 – Q9",
+    questions: [
+      {
+        name: "q7",
+        legend: "Q7. Disposez-vous d'une politique interne encadrant l'utilisation de l'intelligence artificielle ?",
+        options: [
+          { value: "oui", label: "Oui" },
+          { value: "non", label: "Non" },
+        ],
+      },
+      {
+        name: "q8",
+        legend: "Q8. Une évaluation des risques liés à l'IA a-t-elle été réalisée dans votre organisation ?",
+        options: [
+          { value: "oui", label: "Oui" },
+          { value: "non", label: "Non" },
+          { value: "partiellement", label: "Partiellement" },
+        ],
+      },
+      {
+        name: "q9",
+        legend: "Q9. Les systèmes d'IA utilisés traitent-ils des informations sensibles ou confidentielles ?",
+        options: [
+          { value: "oui", label: "Oui" },
+          { value: "non", label: "Non" },
+          { value: "sais-pas", label: "Je ne sais pas" },
+        ],
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="PréQualIA — Testez la maturité IA de votre entreprise"
+  description="PréQualIA : testez en 3 minutes la maturité IA de votre entreprise. Test gratuit, résultat immédiat, recommandations personnalisées."
+>
+  <Section as="h1"
+    tone="white"
+    eyebrow="Test de maturité gratuit · 9 questions · 3 minutes"
+    title="PréQualIA"
+    description="Répondez à 9 questions et obtenez le niveau de maturité IA de votre entreprise — immédiatement et gratuitement."
+  >
+    <div class="mx-auto -mt-2 mb-6 w-32 sm:w-36" aria-hidden="true">
+      <ThemeBadge slug="intelligence-artificielle" />
+    </div>
+
+    <div class="mx-auto mb-8 max-w-3xl rounded-2xl border border-slate-200 bg-cream-100 p-5 text-sm text-slate-700">
+      <strong class="text-slate-900">Pourquoi cet outil ?</strong> Le Règlement (UE) 2024/1689 (AI Act) encadre la mise sur le marché et l'utilisation des systèmes d'IA selon leur niveau de risque, avec des obligations qui montent en charge jusqu'en 2027 : transparence, gouvernance, documentation, gestion des risques. Ce test de maturité ne remplace pas une qualification juridique de vos systèmes.
+    </div>
+
+    <div class="mx-auto max-w-3xl">
+      <!-- Progress -->
+      <div class="mb-8 flex items-center gap-4">
+        <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+          <div id="progress-fill" class="h-full w-0 rounded-full bg-accent-600 transition-all duration-300"></div>
+        </div>
+        <p id="progress-label" class="whitespace-nowrap text-xs font-semibold text-slate-500">0 / 9 réponses</p>
+      </div>
+
+      <form id="preQualIAForm" novalidate class="space-y-6">
+        {groups.map((group) => (
+          <div class="rounded-2xl border border-slate-200 bg-cream-50 shadow-sm">
+            <div class="flex items-center justify-between border-b border-slate-200 bg-cream-100 px-6 py-4">
+              <h2 class="text-sm font-semibold text-slate-900">{group.title}</h2>
+              <span class="text-xs font-medium text-slate-400">{group.range}</span>
+            </div>
+            <div class="space-y-7 px-6 py-6">
+              {group.questions.map((q) => (
+                <div data-qblock={q.name}>
+                  <QuizQuestion name={q.name} legend={q.legend} options={q.options} />
+                  <p data-error={q.name} class="mt-2 hidden text-xs font-medium text-terracotta-600">
+                    Veuillez sélectionner une réponse.
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <div class="pt-2 text-center">
+          <button
+            type="button"
+            id="compute-btn"
+            class="inline-flex items-center justify-center gap-2 rounded-full bg-terracotta-600 px-8 py-4 text-base font-bold text-cream-50 transition-colors hover:bg-terracotta-700"
+          >
+            Calculer ma maturité IA →
+          </button>
+          <p class="mt-3 text-xs text-slate-400">Données traitées localement dans votre navigateur — rien n'est transmis tant que vous ne le demandez pas.</p>
+        </div>
+      </form>
+
+      <!-- ── RESULTS ── -->
+      <div id="results" class="mt-12 hidden">
+        <div id="result-header" class="rounded-2xl border p-8 text-center">
+          <p id="result-tag" class="text-xs font-bold uppercase tracking-wider"></p>
+          <h2 id="result-title" class="mt-2 text-2xl font-bold text-slate-900">Votre niveau de maturité IA</h2>
+          <p id="result-sub" class="mx-auto mt-2 max-w-md text-sm text-slate-600"></p>
+
+          <div class="mx-auto mt-6 max-w-sm">
+            <div class="h-2.5 overflow-hidden rounded-full bg-slate-200">
+              <div id="gauge-fill" class="h-full w-0 rounded-full transition-all duration-700"></div>
+            </div>
+            <div class="mt-1.5 flex justify-between text-[10px] font-semibold text-slate-400">
+              <span>Maîtrisé</span><span>À structurer</span><span>Prioritaire</span><span>Urgent</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-terracotta-400 bg-terracotta-50 p-6 text-center">
+          <p class="text-xs font-bold uppercase tracking-wide text-terracotta-600">Niveau recommandé pour votre entreprise</p>
+          <p id="tier-reco-title" class="mt-1 text-lg font-bold text-slate-900"></p>
+          <p id="tier-reco-reason" class="mt-1 text-sm text-slate-600"></p>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-slate-200 bg-cream-50 p-6 shadow-sm">
+          <h3 class="text-xs font-bold uppercase tracking-wide text-slate-500">Constats identifiés</h3>
+          <div id="findings" class="mt-4 space-y-3"></div>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-slate-200 bg-cream-50 p-6 shadow-sm">
+          <h3 class="text-xs font-bold uppercase tracking-wide text-slate-500">Recommandations prioritaires</h3>
+          <div id="recommendations" class="mt-4 space-y-4"></div>
+        </div>
+
+        <div class="mt-6 flex flex-col gap-4 rounded-2xl bg-accent-900 p-6 text-cream-50 sm:flex-row sm:items-center">
+          <div class="flex-1">
+            <h3 class="text-base font-semibold">Prochaine étape</h3>
+            <p class="mt-1 text-sm text-slate-300">Donnez à vos équipes les bons réflexes avec l'IA — forfait plateforme seul ou avec accompagnement, selon vos usages.</p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a id="tier-cta" href="/formations/" class="inline-flex items-center justify-center gap-2 rounded-full bg-terracotta-600 px-6 py-3 text-sm font-semibold text-cream-50 transition-colors hover:bg-terracotta-700">
+              Voir la formule adaptée à votre entreprise
+            </a>
+            <button type="button" id="reset-btn" class="rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-cream-50 ring-1 ring-inset ring-slate-600 transition-colors hover:bg-white/20">
+              Recommencer
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-slate-200 bg-cream-50 p-6 shadow-sm" id="contact-block">
+          <h3 class="text-xs font-bold uppercase tracking-wide text-slate-500">Demander à être accompagné(e)</h3>
+          <p class="mt-2 text-sm text-slate-600">Laissez-nous vos coordonnées : nous vous recontacterons avec votre résultat complet.</p>
+
+          <div class="mt-5 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label for="contact-nom" class="block text-sm font-medium text-slate-700">Nom complet <span aria-hidden="true" class="text-terracotta-600">*</span></label>
+              <input id="contact-nom" type="text" placeholder="Jean Dupont" class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20" />
+            </div>
+            <div>
+              <label for="contact-email" class="block text-sm font-medium text-slate-700">Email <span aria-hidden="true" class="text-terracotta-600">*</span></label>
+              <input id="contact-email" type="email" placeholder="jean.dupont@entreprise.fr" class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20" />
+            </div>
+            <div>
+              <label for="contact-societe" class="block text-sm font-medium text-slate-700">Société</label>
+              <input id="contact-societe" type="text" placeholder="Nom de votre organisation" class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20" />
+            </div>
+            <div>
+              <label for="contact-tel" class="block text-sm font-medium text-slate-700">Téléphone</label>
+              <input id="contact-tel" type="tel" placeholder="06 12 34 56 78" class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20" />
+            </div>
+            <div class="sm:col-span-2">
+              <label for="contact-message" class="block text-sm font-medium text-slate-700">Message (optionnel)</label>
+              <textarea id="contact-message" rows="3" placeholder="Précisez votre besoin ou votre contexte..." class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20"></textarea>
+            </div>
+          </div>
+
+          <p id="err-contact" class="mt-3 hidden text-xs font-medium text-terracotta-600">Merci de renseigner votre nom et un email valide.</p>
+          <p id="err-contact-send" class="mt-3 hidden text-xs font-medium text-terracotta-600"></p>
+
+          <div class="mt-5 text-center">
+            <button type="button" id="btn-send-contact" class="rounded-full bg-terracotta-600 px-6 py-3 text-sm font-semibold text-cream-50 transition-colors hover:bg-terracotta-700 disabled:opacity-60">
+              <span id="btn-send-contact-label">Envoyer ma demande de contact</span>
+            </button>
+            <p id="contact-send-note" class="mt-2 text-xs text-slate-400">Votre demande et votre résultat complet sont envoyés directement — aucune application email n'est nécessaire.</p>
+          </div>
+        </div>
+
+        <p class="mx-auto mt-8 max-w-2xl text-center text-xs text-slate-400">
+          Cette évaluation est fournie à titre indicatif. Elle ne constitue pas un avis juridique.
+          Règlement (UE) 2024/1689 du Parlement européen et du Conseil — AI Act.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <script>
+  const CONTACT_ENDPOINT = "https://elearning.conform-it.fr/contact_prequalia.py";
+
+  const QUESTIONS_META: Record<string, { text: string; options: Record<string, string> }> = {
+    q1: { text: "Votre organisation utilise-t-elle des systèmes d'intelligence artificielle ?", options: { "oui-interne": "Oui, développés en interne", "oui-tiers": "Oui, solutions tierces", "oui-les-deux": "Oui, les deux (développés en interne et solutions tierces)", non: "Non", "sais-pas": "Je ne sais pas" } },
+    q2: { text: "Ces systèmes influencent-ils des décisions concernant des personnes (recrutement, crédit, santé, éducation) ?", options: { oui: "Oui", non: "Non", partiellement: "Partiellement" } },
+    q3: { text: "Vos systèmes d'IA interagissent-ils directement avec des utilisateurs (chatbot, assistant, recommandation automatisée) ?", options: { oui: "Oui", non: "Non" } },
+    q4: { text: "Votre organisation utilise-t-elle des outils d'IA générative (ChatGPT, copilots, assistants rédactionnels, génération de code…) ?", options: { "oui-regulier": "Oui, usage régulier", "oui-ponctuel": "Oui, usage ponctuel", non: "Non", "sais-pas": "Je ne sais pas" } },
+    q5: { text: "Utilisez-vous des technologies d'identification biométrique ou de reconnaissance faciale ?", options: { oui: "Oui", non: "Non", "sais-pas": "Je ne sais pas" } },
+    q6: { text: "Votre organisation développe-t-elle ou intègre-t-elle des systèmes d'IA dans ses produits ou services ?", options: { developpement: "Oui, développement", integration: "Oui, intégration", utilisation: "Utilisation uniquement", non: "Non" } },
+    q7: { text: "Disposez-vous d'une politique interne encadrant l'utilisation de l'intelligence artificielle ?", options: { oui: "Oui", non: "Non" } },
+    q8: { text: "Une évaluation des risques liés à l'IA a-t-elle été réalisée dans votre organisation ?", options: { oui: "Oui", non: "Non", partiellement: "Partiellement" } },
+    q9: { text: "Les systèmes d'IA utilisés traitent-ils des informations sensibles ou confidentielles ?", options: { oui: "Oui", non: "Non", "sais-pas": "Je ne sais pas" } },
+  };
+
+  const SCORES: Record<string, Record<string, number>> = {
+    q1: { "oui-interne": 3, "oui-tiers": 2, "oui-les-deux": 4, non: 0, "sais-pas": 1 },
+    q2: { oui: 4, partiellement: 2, non: 0 },
+    q3: { oui: 3, non: 0 },
+    q4: { "oui-regulier": 3, "oui-ponctuel": 2, non: 0, "sais-pas": 1 },
+    q5: { oui: 5, non: 0, "sais-pas": 2 },
+    q6: { developpement: 4, integration: 3, utilisation: 1, non: 0 },
+    q7: { oui: -2, non: 2 },
+    q8: { oui: -2, partiellement: 0, non: 2 },
+    q9: { oui: 3, non: 0, "sais-pas": 2 },
+  };
+
+  type Level = {
+    min: number;
+    max: number;
+    cls: "faible" | "limite" | "significatif" | "critique";
+    tag: string;
+    title: string;
+    sub: string;
+    gauge: number;
+    header: string;
+    tagClass: string;
+    gaugeClass: string;
+  };
+
+  const LEVELS: Level[] = [
+    {
+      min: -99, max: 4, cls: "faible", tag: "MATURITÉ SOLIDE",
+      title: "Bon niveau de maîtrise de l'IA",
+      sub: "Votre organisation encadre déjà bien ses usages de l'IA. Quelques mesures de renforcement restent utiles pour consolider cette avance.",
+      gauge: 12,
+      header: "border-green-200 bg-green-50",
+      tagClass: "text-green-700",
+      gaugeClass: "bg-gradient-to-r from-green-400 to-green-600",
+    },
+    {
+      min: 5, max: 10, cls: "limite", tag: "POTENTIEL À STRUCTURER",
+      title: "Un usage de l'IA à mieux encadrer",
+      sub: "Certains usages de l'IA gagneraient à être mieux structurés dans votre entreprise. Un accompagnement ciblé permettrait d'aller plus loin, en toute confiance.",
+      gauge: 38,
+      header: "border-amber-200 bg-amber-50",
+      tagClass: "text-amber-700",
+      gaugeClass: "bg-gradient-to-r from-amber-300 to-amber-500",
+    },
+    {
+      min: 11, max: 18, cls: "significatif", tag: "FORT POTENTIEL, FAIBLE ENCADREMENT",
+      title: "Vos équipes utilisent l'IA sans cadre suffisant",
+      sub: "Vos usages de l'IA sont significatifs mais l'encadrement actuel ne suit pas. Structurer maintenant permet à la fois de gagner en efficacité et de pouvoir démontrer que les mesures ont été prises.",
+      gauge: 65,
+      header: "border-orange-200 bg-orange-50",
+      tagClass: "text-orange-700",
+      gaugeClass: "bg-gradient-to-r from-orange-300 to-orange-600",
+    },
+    {
+      min: 19, max: 999, cls: "critique", tag: "ACTION PRIORITAIRE",
+      title: "Fort potentiel de gain, encadrement à mettre en place d'urgence",
+      sub: "Vos équipes utilisent beaucoup l'IA, avec très peu de cadre aujourd'hui. C'est là que la marge de progrès — et l'urgence à structurer — sont les plus fortes.",
+      gauge: 92,
+      header: "border-red-200 bg-red-50",
+      tagClass: "text-red-700",
+      gaugeClass: "bg-gradient-to-r from-red-400 to-red-600",
+    },
+  ];
+
+  const FINDING_STYLES: Record<string, string> = {
+    alert: "bg-red-50 border border-red-200 text-red-800",
+    warn: "bg-amber-50 border border-amber-200 text-amber-800",
+    info: "bg-blue-50 border border-blue-200 text-blue-800",
+    ok: "bg-green-50 border border-green-200 text-green-800",
+  };
+
+  const PRIORITY_STYLES: Record<string, string> = {
+    "immédiat": "bg-red-100 text-red-700",
+    court: "bg-orange-100 text-orange-700",
+    moyen: "bg-amber-100 text-amber-700",
+  };
+
+  const PRIORITY_LABELS: Record<string, string> = {
+    "immédiat": "Immédiat",
+    court: "Court terme",
+    moyen: "Moyen terme",
+  };
+
+  type Finding = { type: "alert" | "warn" | "info" | "ok"; text: string };
+  type Reco = { title: string; sub: string; prio: "immédiat" | "court" | "moyen" };
+
+  function buildFindings(a: Record<string, string>): Finding[] {
+    const f: Finding[] = [];
+    const noAI = a.q1 === "non";
+    const unknown = a.q1 === "sais-pas";
+
+    if (noAI) {
+      f.push({ type: "ok", text: "<strong>Aucun système IA identifié.</strong> Votre organisation n'est pas directement concernée par les obligations de l'AI Act pour l'instant. Anticipez néanmoins l'évolution de vos usages." });
+      return f;
+    }
+    if (unknown) {
+      f.push({ type: "warn", text: "<strong>Inventaire IA manquant.</strong> L'incertitude sur l'usage de l'IA constitue elle-même un risque de gouvernance. Un recensement interne est indispensable." });
+    }
+    if (a.q5 === "oui") {
+      f.push({ type: "alert", text: "<strong>Biométrie détectée — vérification article 5 obligatoire.</strong> L'identification biométrique à distance dans les espaces publics est interdite sauf exceptions strictes. Une validation juridique immédiate s'impose." });
+    }
+    if (a.q5 === "sais-pas") {
+      f.push({ type: "warn", text: "<strong>Usage biométrique non vérifié.</strong> L'incertitude sur l'usage de la biométrie est un signal d'alerte. Un audit technique des systèmes utilisés est recommandé." });
+    }
+    if (a.q2 === "oui") {
+      f.push({ type: "alert", text: "<strong>Décisions impactant des personnes → probable Annexe III (risque élevé).</strong> Les systèmes IA influençant le recrutement, le crédit, la santé ou l'éducation relèvent très probablement de la catégorie à risque élevé de l'AI Act." });
+    }
+    if (a.q2 === "partiellement") {
+      f.push({ type: "warn", text: "<strong>Décisions partiellement automatisées affectant des personnes.</strong> Une qualification précise de chaque système s'impose pour déterminer si l'Annexe III s'applique." });
+    }
+    if (a.q3 === "oui") {
+      f.push({ type: "info", text: "<strong>Interaction directe avec des utilisateurs → obligations article 50.</strong> Tout système interagissant avec des personnes doit être clairement identifié comme IA. Des mentions obligatoires sont à mettre en place." });
+    }
+    if (a.q4 === "oui-regulier") {
+      f.push({ type: "info", text: "<strong>IA générative en usage régulier → obligations de marquage.</strong> Les contenus générés par IA (textes, images, voix) doivent être détectables. Des politiques d'usage interne sont à formaliser." });
+    }
+    if (a.q4 === "oui-ponctuel") {
+      f.push({ type: "info", text: "<strong>Usage ponctuel d'IA générative.</strong> Même en usage ponctuel, les obligations de transparence sur les contenus synthétiques s'appliquent." });
+    }
+    if (a.q6 === "developpement") {
+      f.push({ type: "warn", text: "<strong>Développement de systèmes IA → obligations fournisseur complètes.</strong> Vous êtes soumis aux exigences les plus strictes : documentation technique, tests de robustesse, registre de conformité, surveillance post-marché." });
+    }
+    if (a.q6 === "integration") {
+      f.push({ type: "info", text: "<strong>Intégration d'IA dans vos produits/services → responsabilités déployeur.</strong> En tant que déployeur, vous avez des obligations spécifiques selon la catégorie de risque du système intégré." });
+    }
+    if (a.q7 === "non") {
+      f.push({ type: "warn", text: "<strong>Absence de politique IA interne.</strong> Sans charte ou politique encadrant l'usage de l'IA, votre organisation manque d'un dispositif de gouvernance fondamental exigé par l'AI Act." });
+    }
+    if (a.q8 === "non") {
+      f.push({ type: "warn", text: "<strong>Aucune évaluation des risques IA réalisée.</strong> L'AI Act impose une évaluation formelle des risques pour les systèmes à risque élevé. Cette lacune expose votre organisation à des sanctions." });
+    }
+    if (a.q9 === "oui") {
+      f.push({ type: "info", text: "<strong>Informations sensibles traitées → vigilance renforcée requise.</strong> Le traitement d'informations sensibles par des systèmes IA crée des obligations spécifiques au titre du règlement européen sur l'IA. Une revue par un référent interne est recommandée." });
+    }
+    if (a.q9 === "sais-pas") {
+      f.push({ type: "warn", text: "<strong>Nature des informations traitées incertaine.</strong> Ne pas savoir si vos systèmes IA traitent des informations sensibles est une lacune de gouvernance à combler en priorité." });
+    }
+    if (f.length === 0) {
+      f.push({ type: "ok", text: "Aucun signal d'alerte majeur identifié sur la base de vos réponses. Maintenez une veille réglementaire régulière sur l'AI Act." });
+    }
+    return f;
+  }
+
+  function buildRecommendations(a: Record<string, string>, level: Level): Reco[] {
+    const r: Reco[] = [];
+    const noAI = a.q1 === "non";
+    if (noAI) {
+      r.push({ title: "Effectuer une veille réglementaire", sub: "Anticiper l'éventuelle introduction de systèmes IA dans votre organisation et les obligations associées.", prio: "moyen" });
+      r.push({ title: "Former les décideurs à l'AI Act", sub: "Comprendre les obligations réglementaires avant tout projet IA.", prio: "moyen" });
+      return r;
+    }
+    if (a.q5 === "oui") {
+      r.push({ title: "Suspendre et valider les usages biométriques", sub: "Obtenir immédiatement un avis juridique sur la conformité de vos systèmes biométriques avec l'article 5 de l'AI Act.", prio: "immédiat" });
+    }
+    if (level.cls === "critique" || level.cls === "significatif") {
+      r.push({ title: "Lancer un inventaire complet des systèmes IA", sub: "Recenser tous les systèmes IA utilisés, développés ou intégrés, avec leur niveau de risque AI Act et leur statut de conformité.", prio: level.cls === "critique" ? "immédiat" : "court" });
+    } else {
+      r.push({ title: "Recenser vos systèmes IA", sub: "Établir un registre interne de tous les outils IA utilisés dans l'organisation.", prio: "court" });
+    }
+    if (a.q2 === "oui" || a.q2 === "partiellement") {
+      r.push({ title: "Qualifier juridiquement vos systèmes IA décisionnels", sub: "Vérifier si vos systèmes relèvent de l'Annexe III (risque élevé) et documenter la justification pour chacun.", prio: "immédiat" });
+    }
+    if (a.q7 === "non") {
+      r.push({ title: "Rédiger et déployer une politique IA interne", sub: "Formaliser les règles d'usage, les responsabilités et les procédures d'évaluation avant tout déploiement IA.", prio: "court" });
+    }
+    if (a.q8 === "non" || a.q8 === "partiellement") {
+      r.push({ title: "Mettre en place une évaluation des risques IA", sub: "Instituer un processus systématique d'analyse de risque (technique, juridique, éthique) avant tout nouveau déploiement.", prio: "court" });
+    }
+    if (a.q4 !== "non" && a.q4 !== undefined) {
+      r.push({ title: "Encadrer l'usage de l'IA générative", sub: "Définir des règles claires sur le marquage des contenus synthétiques et les données pouvant être soumises aux modèles externes.", prio: "court" });
+    }
+    if (a.q6 === "developpement") {
+      r.push({ title: "Préparer la documentation technique réglementaire", sub: "Constituer les dossiers techniques, journaux d'événements et procédures de supervision exigés pour les systèmes à risque élevé.", prio: "court" });
+    }
+    r.push({ title: "Nommer un référent conformité IA", sub: "Désigner un référent IA chargé du suivi réglementaire, en lien avec le service juridique.", prio: "moyen" });
+    return r.slice(0, 5);
+  }
+
+  type TierReco = { tier: "accompagne" | "socle"; title: string; reason: string; href: string };
+
+  function recommendTier(a: Record<string, string>, level: Level): TierReco {
+    const enjeu = a.q2 === "oui" || a.q5 === "oui" || a.q6 === "developpement";
+    const niveauEleve = level.cls === "critique" || level.cls === "significatif";
+    if (enjeu || niveauEleve) {
+      return {
+        tier: "accompagne",
+        title: "Forfait plateforme + accompagnement",
+        reason: "Vos usages touchent des décisions sensibles ou un développement de systèmes IA : au-delà de l'e-learning, un accompagnement humain (dirigeants, managers, charte co-construite) est justifié.",
+        href: "/offre/",
+      };
+    }
+    return {
+      tier: "socle",
+      title: "Forfait plateforme",
+      reason: "Vos usages IA restent courants (bureautique, assistants). Le forfait plateforme — e-learning, badges, registre exportable — suffit à être en mesure de démontrer que les mesures ont été prises.",
+      href: "/offre/",
+    };
+  }
+
+  const answers: Record<string, string> = {};
+  let lastResult: { score: number; level: Level; findings: Finding[]; recos: Reco[]; answers: Record<string, string>; date: Date } | null = null;
+
+  const form = document.getElementById("preQualIAForm") as HTMLFormElement | null;
+
+  function updateProgress() {
+    const total = 9;
+    const done = Object.keys(answers).length;
+    const fill = document.getElementById("progress-fill");
+    const label = document.getElementById("progress-label");
+    if (fill) fill.style.width = (done / total) * 100 + "%";
+    if (label) label.textContent = `${done} / ${total} réponses`;
+  }
+
+  form?.addEventListener("change", (event) => {
+    const target = event.target as HTMLInputElement;
+    if (target.type !== "radio") return;
+    answers[target.name] = target.value;
+    const err = document.querySelector(`[data-error="${target.name}"]`);
+    err?.classList.add("hidden");
+    updateProgress();
+  });
+
+  function stripHtml(html: string) {
+    return html.replace(/<[^>]+>/g, "");
+  }
+
+  function buildResultText(contact?: { nom: string; email: string; societe: string; tel: string; message: string }) {
+    if (!lastResult) return "";
+    const { score, level, findings, recos, date } = lastResult;
+    const lines: string[] = [];
+    lines.push("RÉSULTAT DE PRÉ-QUALIFICATION — AI Act (PréQualIA)");
+    lines.push("Généré le " + date.toLocaleDateString("fr-FR") + " à " + date.toLocaleTimeString("fr-FR"));
+    if (contact?.nom) {
+      lines.push("");
+      lines.push("COORDONNÉES DU DEMANDEUR :");
+      lines.push("- Nom : " + contact.nom);
+      lines.push("- Email : " + contact.email);
+      if (contact.societe) lines.push("- Société : " + contact.societe);
+      if (contact.tel) lines.push("- Téléphone : " + contact.tel);
+      if (contact.message) lines.push("- Message : " + contact.message);
+    }
+    lines.push("");
+    lines.push("NIVEAU DE MATURITÉ IA : " + level.tag + " — " + level.title);
+    lines.push(level.sub);
+    lines.push("Score de pré-qualification : " + score);
+    lines.push("");
+    lines.push("RÉPONSES AU QUESTIONNAIRE :");
+    Object.keys(QUESTIONS_META).forEach((q) => {
+      const meta = QUESTIONS_META[q];
+      const val = lastResult!.answers[q];
+      const label = val ? meta.options[val] || val : "(sans réponse)";
+      lines.push("- " + meta.text);
+      lines.push("  → " + label);
+    });
+    lines.push("");
+    lines.push("CONSTATS IDENTIFIÉS :");
+    findings.forEach((f) => lines.push("- " + stripHtml(f.text)));
+    lines.push("");
+    lines.push("RECOMMANDATIONS PRIORITAIRES :");
+    recos.forEach((r, i) => lines.push(i + 1 + ". [" + r.prio + "] " + r.title + " — " + r.sub));
+    lines.push("");
+    lines.push("---");
+    lines.push("Cette évaluation est fournie à titre indicatif. Elle ne constitue pas un avis juridique.");
+    lines.push("Règlement (UE) 2024/1689 du Parlement européen et du Conseil — AI Act.");
+    return lines.join("\n");
+  }
+
+  document.getElementById("compute-btn")?.addEventListener("click", () => {
+    const required = ["q1", "q2", "q3", "q4", "q5", "q6", "q7", "q8", "q9"];
+    let valid = true;
+    let firstErrorBlock: Element | null = null;
+    required.forEach((q) => {
+      if (!answers[q]) {
+        document.querySelector(`[data-error="${q}"]`)?.classList.remove("hidden");
+        if (!firstErrorBlock) firstErrorBlock = document.querySelector(`[data-qblock="${q}"]`);
+        valid = false;
+      }
+    });
+    if (!valid) {
+      (firstErrorBlock as Element | null)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    let score = 0;
+    Object.keys(SCORES).forEach((q) => {
+      const val = answers[q];
+      if (val !== undefined && SCORES[q][val] !== undefined) score += SCORES[q][val];
+    });
+
+    const level = LEVELS.find((l) => score >= l.min && score <= l.max) || LEVELS[LEVELS.length - 1];
+
+    const header = document.getElementById("result-header")!;
+    header.className = "rounded-2xl border p-8 text-center " + level.header;
+    const tagEl = document.getElementById("result-tag")!;
+    tagEl.textContent = level.tag;
+    tagEl.className = "text-xs font-bold uppercase tracking-wider " + level.tagClass;
+    document.getElementById("result-title")!.textContent = level.title;
+    document.getElementById("result-sub")!.textContent = level.sub;
+
+    const gaugeFill = document.getElementById("gauge-fill")!;
+    gaugeFill.className = "h-full rounded-full transition-all duration-700 " + level.gaugeClass;
+    setTimeout(() => { gaugeFill.style.width = level.gauge + "%"; }, 50);
+
+    const tierReco = recommendTier(answers, level);
+    document.getElementById("tier-reco-title")!.textContent = tierReco.title;
+    document.getElementById("tier-reco-reason")!.textContent = tierReco.reason;
+    const tierCta = document.getElementById("tier-cta") as HTMLAnchorElement;
+    tierCta.href = tierReco.href;
+
+    const findings = buildFindings(answers);
+    document.getElementById("findings")!.innerHTML = findings
+      .map((f) => `<div class="rounded-lg px-4 py-3 text-sm ${FINDING_STYLES[f.type]}">${f.text}</div>`)
+      .join("");
+
+    const recos = buildRecommendations(answers, level);
+    document.getElementById("recommendations")!.innerHTML = recos
+      .map(
+        (r, i) => `
+      <div class="flex gap-3">
+        <span class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent-600 text-xs font-bold text-cream-50">${i + 1}</span>
+        <div>
+          <p class="text-sm font-semibold text-slate-900">${r.title} <span class="ml-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${PRIORITY_STYLES[r.prio]}">${PRIORITY_LABELS[r.prio]}</span></p>
+          <p class="mt-0.5 text-sm text-slate-600">${r.sub}</p>
+        </div>
+      </div>`
+      )
+      .join("");
+
+    document.getElementById("results")!.classList.remove("hidden");
+    lastResult = { score, level, findings, recos, answers: { ...answers }, date: new Date() };
+    setTimeout(() => document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+  });
+
+  document.getElementById("reset-btn")?.addEventListener("click", () => {
+    Object.keys(answers).forEach((k) => delete answers[k]);
+    form?.querySelectorAll("input[type=radio]").forEach((i) => ((i as HTMLInputElement).checked = false));
+    form?.querySelectorAll("[data-error]").forEach((e) => e.classList.add("hidden"));
+    document.getElementById("results")?.classList.add("hidden");
+    (document.getElementById("gauge-fill") as HTMLElement).style.width = "0%";
+    ["contact-nom", "contact-email", "contact-societe", "contact-tel", "contact-message"].forEach((id) => {
+      const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
+      if (el) {
+        el.value = "";
+        el.disabled = false;
+      }
+    });
+    document.getElementById("err-contact")?.classList.add("hidden");
+    document.getElementById("err-contact-send")?.classList.add("hidden");
+    const btn = document.getElementById("btn-send-contact") as HTMLButtonElement | null;
+    if (btn) btn.disabled = false;
+    const label = document.getElementById("btn-send-contact-label");
+    if (label) label.textContent = "Envoyer ma demande de contact";
+    lastResult = null;
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  function isValidEmail(v: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  document.getElementById("btn-send-contact")?.addEventListener("click", async () => {
+    if (!lastResult) return;
+
+    const nom = (document.getElementById("contact-nom") as HTMLInputElement).value.trim();
+    const email = (document.getElementById("contact-email") as HTMLInputElement).value.trim();
+    const societe = (document.getElementById("contact-societe") as HTMLInputElement).value.trim();
+    const tel = (document.getElementById("contact-tel") as HTMLInputElement).value.trim();
+    const message = (document.getElementById("contact-message") as HTMLTextAreaElement).value.trim();
+    const errEl = document.getElementById("err-contact")!;
+    const errSendEl = document.getElementById("err-contact-send")!;
+    errSendEl.classList.add("hidden");
+
+    if (!nom || !isValidEmail(email)) {
+      errEl.classList.remove("hidden");
+      document.getElementById("contact-block")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    errEl.classList.add("hidden");
+
+    const btn = document.getElementById("btn-send-contact") as HTMLButtonElement;
+    const btnLabel = document.getElementById("btn-send-contact-label")!;
+    btn.disabled = true;
+    const originalLabel = btnLabel.textContent;
+    btnLabel.textContent = "Envoi en cours...";
+
+    const resultText = buildResultText({ nom, email, societe, tel, message });
+
+    try {
+      const resp = await fetch(CONTACT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom, email, societe, tel, message,
+          niveauRisque: lastResult.level.tag + " — " + lastResult.level.title,
+          score: lastResult.score,
+          resultText,
+        }),
+      });
+      let data: { ok?: boolean; error?: string };
+      try {
+        data = await resp.json();
+      } catch {
+        throw new Error(`Le serveur n'a pas répondu correctement (code ${resp.status}).`);
+      }
+      if (!resp.ok || !data.ok) {
+        throw new Error(data.error || "Échec de l'envoi.");
+      }
+
+      btnLabel.textContent = "✅ Demande envoyée";
+      const note = document.getElementById("contact-send-note");
+      if (note) note.textContent = "Votre demande a bien été envoyée. Nous vous recontacterons rapidement.";
+      document.querySelectorAll("#contact-block input, #contact-block textarea").forEach((el) => ((el as HTMLInputElement).disabled = true));
+    } catch (err) {
+      btn.disabled = false;
+      btnLabel.textContent = originalLabel;
+      errSendEl.textContent = "⚠️ " + (err as Error).message;
+      errSendEl.classList.remove("hidden");
+    }
+  });
+  </script>
+</BaseLayout>

@@ -1,0 +1,137 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+
+const requestTypes = [
+  { value: "", label: "Choisir" },
+  { value: "forfait_plateforme", label: "Forfait plateforme (entreprise)" },
+  { value: "demande_demo", label: "Demande de démo" },
+  { value: "demo_vers_production", label: "Convertir une démo en espace production" },
+  { value: "accompagnement_journee", label: "Accompagnement sur site (journées)" },
+  { value: "devis_pilotage", label: "Devis accompagnement pilotage" },
+  { value: "achat_formation", label: "Particulier — une formation" },
+  { value: "achat_fiche", label: "Particulier — une fiche pratique" },
+  { value: "achat_quiz", label: "Particulier — un quiz" },
+  { value: "achat_pack", label: "Particulier — un pack sur mesure" },
+  { value: "abonnement_particulier", label: "Particulier — abonnement annuel" },
+  { value: "cadre_usage_IA", label: "Cadre d'usage / charte IA (article 4 AI Act)" },
+  { value: "audit_IA", label: "Audit des systèmes d'IA" },
+  { value: "accompagnement_collectivite", label: "Collectivités & secteur public" },
+  { value: "entretien_NIS2", label: "Entretien NIS2" },
+  { value: "entretien_DORA", label: "Audit de conformité DORA" },
+  { value: "diagnostic_RGPD", label: "Diagnostic RGPD (protection des données)" },
+  { value: "audit_RGAA", label: "Audit RGAA" },
+  { value: "accompagnement", label: "Accompagnement accessibilité" },
+  { value: "prediag_cyber", label: "Pré-diagnostic cybersécurité" },
+  { value: "prediag_non_discrimination", label: "Pré-diagnostic non-discrimination" },
+  { value: "prediag_harcelement", label: "Pré-diagnostic harcèlement" },
+  { value: "prediag_anticorruption", label: "Pré-diagnostic anti-corruption" },
+  { value: "prediag_sobriete", label: "Pré-diagnostic sobriété numérique" },
+  { value: "question", label: "Question générale" },
+];
+---
+
+<BaseLayout title="Contact" description="Contactez conform-IT pour vos projets de conformité numérique, accessibilité RGAA, NIS2 ou IA Act.">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <Section as="h1" tone="white" eyebrow="Parlons-en" title="Contact" description="N'hésitez pas à nous écrire via ce formulaire. Nous reviendrons vers vous rapidement.">
+    <form
+      id="contactForm"
+      class="mx-auto max-w-2xl space-y-5"
+      action="https://audit.conform-it.fr/contact-send.php"
+      method="POST"
+      novalidate
+    >
+      <input aria-hidden="true" autocomplete="off" tabindex="-1" type="text" name="_gotcha" class="hidden" />
+      <input type="hidden" name="_language" value="fr" />
+      <input type="hidden" name="_origin" value="https://www.conform-it.fr/" />
+      <input type="hidden" name="_subject" value="Nouveau message via le site" />
+      <input type="hidden" name="_redirect" value="https://www.conform-it.fr/merci/" />
+
+      <div class="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label for="contact-name" class="block text-sm font-medium text-slate-700">Nom / Prénom<span aria-hidden="true" class="text-terracotta-600">*</span></label>
+          <input id="contact-name" name="name" type="text" required maxlength="120" autocomplete="name" placeholder="Votre nom et prénom"
+            class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-terracotta-400 focus:outline-none focus:ring-2 focus:ring-terracotta-100" />
+        </div>
+        <div>
+          <label for="contact-orga" class="block text-sm font-medium text-slate-700">Organisation<span aria-hidden="true" class="text-terracotta-600">*</span></label>
+          <input id="contact-orga" name="orga" type="text" required maxlength="120" autocomplete="organization" placeholder="Votre organisation"
+            class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-terracotta-400 focus:outline-none focus:ring-2 focus:ring-terracotta-100" />
+        </div>
+        <div>
+          <label for="contact-email" class="block text-sm font-medium text-slate-700">Adresse e-mail<span aria-hidden="true" class="text-terracotta-600">*</span></label>
+          <input id="contact-email" name="email" type="email" required inputmode="email" autocomplete="email" placeholder="votre@email.tld"
+            class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-terracotta-400 focus:outline-none focus:ring-2 focus:ring-terracotta-100" />
+        </div>
+        <div>
+          <label for="contact-phone" class="block text-sm font-medium text-slate-700">Téléphone <span class="text-slate-400 font-normal">(facultatif)</span></label>
+          <input id="contact-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Votre numéro de téléphone"
+            class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-terracotta-400 focus:outline-none focus:ring-2 focus:ring-terracotta-100" />
+        </div>
+      </div>
+
+      <div>
+        <label for="contact-type" class="block text-sm font-medium text-slate-700">Votre demande concerne :</label>
+        <select id="contact-type" name="type"
+          class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-terracotta-400 focus:outline-none focus:ring-2 focus:ring-terracotta-100">
+          {requestTypes.map((option) => <option value={option.value}>{option.label}</option>)}
+        </select>
+      </div>
+
+      <div>
+        <label for="contact-subject" class="block text-sm font-medium text-slate-700">Objet du contact<span aria-hidden="true" class="text-terracotta-600">*</span></label>
+        <input id="contact-subject" name="subject" type="text" required maxlength="160" placeholder="Sujet de votre message"
+          class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-terracotta-400 focus:outline-none focus:ring-2 focus:ring-terracotta-100" />
+      </div>
+
+      <div>
+        <label for="contact-message" class="block text-sm font-medium text-slate-700">Message<span aria-hidden="true" class="text-terracotta-600">*</span></label>
+        <textarea id="contact-message" name="message" rows="6" required maxlength="5000" placeholder="Votre message..."
+          class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-terracotta-400 focus:outline-none focus:ring-2 focus:ring-terracotta-100"></textarea>
+      </div>
+
+      <label class="flex items-start gap-3 text-sm text-slate-600">
+        <input id="contact-consent" name="consent" type="checkbox" required value="yes" class="mt-1 h-4 w-4 rounded border-slate-300 text-terracotta-600 focus:ring-terracotta-400" />
+        <span>
+          J'accepte que mes données saisies soient utilisées pour être recontacté(e) dans le cadre de ma demande.
+          Voir la <a class="font-medium text-terracotta-600 hover:underline" href="/politique-de-confidentialite/" target="_blank" rel="noopener">politique de confidentialité<span class="sr-only"> (nouvel onglet)</span></a>.
+        </span>
+      </label>
+
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAAEA1Wm7mtwP66vNH"></div>
+
+      <div class="flex items-center gap-4">
+        <button type="submit" id="contact-submit"
+          class="rounded-full bg-terracotta-600 px-6 py-3 text-sm font-semibold text-cream-50 transition-colors hover:bg-terracotta-700">
+          Envoyer ma demande
+        </button>
+        <span id="form-status" aria-live="polite" class="text-sm text-slate-500"></span>
+      </div>
+
+      <p class="text-xs text-slate-400">Réponse généralement sous 48h ouvrées.</p>
+    </form>
+  </Section>
+
+  <script>
+  const params = new URLSearchParams(location.search);
+  const type = params.get("type");
+  if (type) {
+    const select = document.getElementById("contact-type") as HTMLSelectElement | null;
+    if (select && [...select.options].some((option) => option.value === type)) {
+      select.value = type;
+    }
+  }
+
+  const subject = params.get("subject");
+  if (subject) {
+    const subjectInput = document.getElementById("contact-subject") as HTMLInputElement | null;
+    if (subjectInput) subjectInput.value = subject;
+  }
+
+  const message = params.get("message");
+  if (message) {
+    const messageInput = document.getElementById("contact-message") as HTMLTextAreaElement | null;
+    if (messageInput) messageInput.value = message;
+  }
+  </script>
+</BaseLayout>

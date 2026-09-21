@@ -1,0 +1,38 @@
+---
+---
+
+<div
+  id="cookie-notice"
+  class="fixed inset-x-0 bottom-0 z-50 hidden border-t border-slate-200 bg-slate-900 px-4 py-4 text-cream-50 shadow-lg"
+  role="status"
+>
+  <div class="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-4 sm:flex-nowrap">
+    <p class="text-sm leading-relaxed text-cream-100">
+      Ce site n'utilise <strong>aucun cookie</strong>, ni de suivi ni de mesure d'audience. Nos statistiques de
+      visite sont anonymes et ne collectent aucune donnée personnelle (<a href="https://www.goatcounter.com/" class="underline hover:text-terracotta-400" target="_blank" rel="noopener noreferrer">GoatCounter<span class="sr-only"> (nouvel onglet)</span></a>).
+      En savoir plus : <a href="/politique-de-gestion-des-cookies/" class="underline hover:text-terracotta-400">notre politique de cookies</a>.
+    </p>
+    <button
+      type="button"
+      id="cookie-notice-dismiss"
+      class="shrink-0 rounded-full bg-terracotta-600 px-5 py-2 text-sm font-semibold text-cream-50 transition-colors hover:bg-terracotta-700"
+    >
+      J'ai compris
+    </button>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = "conformit-cookie-notice-dismissed";
+  const notice = document.getElementById("cookie-notice");
+  const dismissBtn = document.getElementById("cookie-notice-dismiss");
+
+  if (notice && !localStorage.getItem(STORAGE_KEY)) {
+    notice.classList.remove("hidden");
+  }
+
+  dismissBtn?.addEventListener("click", () => {
+    localStorage.setItem(STORAGE_KEY, "1");
+    notice?.classList.add("hidden");
+  });
+</script>

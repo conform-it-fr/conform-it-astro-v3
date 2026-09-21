@@ -1,0 +1,24 @@
+# Admin blog conform-IT — CMS local du blog.
+#
+#   docker compose up -d          démarre  →  http://localhost:4400
+#   docker compose logs -f        suit les logs
+#   docker compose down           arrête
+#   docker compose up -d --build  après modif de admin/ ou src/
+#   docker compose down -v && docker compose up -d --build   après modif des dépendances (package.json)
+#
+# ⚠️ Aucune authentification : le port n'est lié qu'à 127.0.0.1 (jamais exposé publiquement).
+# Le dossier du projet est monté en volume : les articles écrits et le dossier prod/ généré
+# via « Générer le site (prod/) » atterrissent directement sur la machine hôte.
+
+services:
+  admin-blog:
+    build: .
+    image: conform-it-admin-blog
+    container_name: conform-it-admin-blog
+    ports:
+      - "127.0.0.1:4400:4400"
+    volumes:
+      - .:/app                 # projet complet (contenu édité + prod/ récupéré sur l'hôte)
+      - /app/node_modules      # node_modules du conteneur (Linux) — protégés du bind-mount macOS
+    environment:
+      - PORT=4400

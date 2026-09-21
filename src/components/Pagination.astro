@@ -1,0 +1,36 @@
+---
+import type { Page } from "astro";
+
+interface Props {
+  page: Page;
+}
+
+const { page } = Astro.props;
+
+// Le site utilise partout des URLs avec slash final ; `page.url.*` d'Astro n'en met pas.
+const withSlash = (u: string | undefined) =>
+  !u ? u : u.endsWith("/") ? u : `${u}/`;
+const prev = withSlash(page.url.prev);
+const next = withSlash(page.url.next);
+
+const linkClass =
+  "rounded-full border border-slate-200 bg-cream-50 px-4 py-1.5 font-semibold text-slate-600 transition-colors hover:border-terracotta-400 hover:text-terracotta-600";
+const disabledClass =
+  "rounded-full border border-slate-100 px-4 py-1.5 font-semibold text-slate-300";
+---
+
+{page.lastPage > 1 && (
+  <nav class="mt-12 flex items-center justify-center gap-3 text-sm" aria-label="Pagination">
+    {prev ? (
+      <a href={prev} rel="prev" class={linkClass}>← Précédent</a>
+    ) : (
+      <span class={disabledClass} aria-hidden="true">← Précédent</span>
+    )}
+    <span class="text-slate-500">Page {page.currentPage} / {page.lastPage}</span>
+    {next ? (
+      <a href={next} rel="next" class={linkClass}>Suivant →</a>
+    ) : (
+      <span class={disabledClass} aria-hidden="true">Suivant →</span>
+    )}
+  </nav>
+)}

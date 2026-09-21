@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "./Section.astro";
+import SelfAssessment from "./SelfAssessment.astro";
+import ThemeBadge from "./ThemeBadge.astro";
+import { getPrediag } from "../data/prediagnostics";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const prediag = getPrediag(slug);
+if (!prediag) throw new Error(`Pré-diagnostic inconnu : ${slug}`);
+---
+
+<BaseLayout title={prediag.titre} description={prediag.intro}>
+  <Section as="h1" tone="white" eyebrow={prediag.eyebrow} title={prediag.titre} description={prediag.intro}>
+    <div class="mx-auto -mt-2 mb-6 w-32 sm:w-36" aria-hidden="true">
+      <ThemeBadge slug={prediag.theme} />
+    </div>
+
+    <div class="mx-auto mb-8 max-w-3xl rounded-2xl border border-slate-200 bg-cream-100 p-5 text-sm text-slate-700">
+      <strong class="text-slate-900">Pourquoi ce pré-diagnostic ?</strong> {prediag.contexte}
+    </div>
+
+    <SelfAssessment config={prediag} />
+
+    <p class="mx-auto mt-10 max-w-3xl text-center text-sm">
+      <a href="/service-en-ligne/" class="font-semibold text-terracotta-600 hover:underline">← Tous les outils</a>
+    </p>
+  </Section>
+</BaseLayout>

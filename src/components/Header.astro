@@ -1,0 +1,94 @@
+---
+// « Demander une démo » est le bouton CTA du header. « Nous contacter » n'est pas dans le
+// header (accessible via le footer) et reste le CTA principal des autres pages (home,
+// /offre/, /formations/, /404, page gouvernance), inchangées.
+// Le lien externe « Voir la plateforme » (elearning.conform-it.fr) n'est pas dans le header :
+// il vit sous le bloc des 9 badges de la home + dans le footer + le plan du site. La page
+// /ariane/ (présentation de la plateforme Ariane FP²), elle, est une page interne du site : elle a
+// sa place dans la nav, juste après le catalogue.
+const DEMO_HREF = "/contact/?type=demande_demo&subject=Demande%20de%20d%C3%A9mo";
+
+const navItems = [
+  { label: "Catalogue", href: "/formations/" },
+  { label: "Ariane FP²", href: "/ariane/" },
+  { label: "Tarifs entreprises", href: "/offre/" },
+  { label: "Outils", href: "/service-en-ligne/" },
+  { label: "Blog", href: "/articles/" },
+  { label: "À propos", href: "/presentation-de-conform-it/" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<a href="#contenu" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-slate-900 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-cream-50">
+  Aller au contenu
+</a>
+
+<header class="sticky top-0 z-50 border-b border-slate-100 bg-cream-50/95 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
+    <a href="/" class="flex items-center gap-3">
+      <img src="/conform-it-logo-maillage-confine-60x60.webp" alt="" aria-hidden="true" width="60" height="60" />
+      <span class="flex flex-col leading-tight">
+        <span class="text-lg font-semibold text-slate-900">conform-IT</span>
+        <span class="hidden text-xs font-medium text-slate-400 sm:block">Former. Piloter. Prouver.</span>
+      </span>
+    </a>
+
+    <nav aria-label="Navigation principale" class="hidden items-center gap-4 xl:flex">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          aria-current={currentPath === item.href ? "page" : undefined}
+          class:list={[
+            "whitespace-nowrap rounded px-1 py-1 text-sm font-medium transition-colors hover:text-terracotta-600",
+            currentPath === item.href ? "text-terracotta-600" : "text-slate-600",
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <a
+      href={DEMO_HREF}
+      class="hidden whitespace-nowrap rounded-full bg-accent-600 px-5 py-2.5 text-sm font-semibold text-cream-50 transition-colors hover:bg-accent-700 xl:inline-block"
+    >
+      Demander une démo
+    </a>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      aria-label="Ouvrir le menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 xl:hidden"
+    >
+      <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <nav aria-label="Navigation mobile" id="mobile-menu" class="hidden flex-col gap-1 border-t border-slate-100 px-6 py-4 xl:hidden">
+    {navItems.map((item) => (
+      <a href={item.href} class="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-cream-100">
+        {item.label}
+      </a>
+    ))}
+    <a href={DEMO_HREF} class="mt-2 rounded-lg bg-accent-600 px-3 py-2 text-center text-sm font-semibold text-cream-50">
+      Demander une démo
+    </a>
+  </nav>
+</header>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  toggle?.addEventListener("click", () => {
+    const isOpen = menu?.classList.toggle("flex");
+    menu?.classList.toggle("hidden");
+    toggle.setAttribute("aria-expanded", String(Boolean(isOpen)));
+    toggle.setAttribute("aria-label", isOpen ? "Fermer le menu" : "Ouvrir le menu");
+  });
+</script>

@@ -1,0 +1,204 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-terracotta-50: #fbf3ee;
+  --color-terracotta-100: #f5e2d4;
+  --color-terracotta-400: #d98455;
+  --color-terracotta-500: #c76230;
+  --color-terracotta-600: #a94f24;
+  --color-terracotta-700: #863d1c;
+
+  --color-slate-50: #f5f5f4;
+  --color-slate-100: #e7e7e6;
+  --color-slate-400: #6b7278;
+  --color-slate-600: #4a5054;
+  --color-slate-700: #3e4448;
+  --color-slate-900: #24282b;
+
+  --color-cream-50: #fffdfa;
+  --color-cream-100: #fdf3e6;
+  --color-cream-200: #f8e9d3;
+
+  --color-accent-500: #1c34c9;
+  --color-accent-600: #0519ad;
+  --color-accent-700: #041486;
+  --color-accent-900: #060f3f;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background-color: var(--color-cream-50);
+  color: var(--color-slate-700);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--color-accent-600);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Impression : contenu utile, noir sur blanc, sans interface
+   ───────────────────────────────────────────────────────────── */
+@media print {
+  @page {
+    margin: 1.5cm;
+  }
+
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    font-size: 11pt;
+  }
+
+  /* Éléments d'interface inutiles sur papier */
+  header,
+  footer,
+  #cookie-notice,
+  .cf-turnstile,
+  [aria-label="Navigation principale"],
+  [aria-label="Navigation mobile"],
+  [aria-hidden="true"] {
+    display: none !important;
+  }
+
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+
+  /* URL affichée après les liens externes uniquement */
+  a[href^="http"]::after {
+    content: " <" attr(href) ">";
+    font-size: 0.85em;
+    font-weight: normal;
+    word-break: break-all;
+  }
+  a[href^="/"]::after,
+  a[href^="#"]::after,
+  a[href^="mailto:"]::after,
+  a[href^="tel:"]::after {
+    content: "";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  img,
+  figure,
+  table,
+  pre,
+  blockquote,
+  li {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Le lien d'évitement ne doit jamais s'imprimer */
+  .sr-only,
+  a[href="#contenu"] {
+    display: none !important;
+  }
+}
+
+/* Effet étoilé sur les zones à fond bleu nuit : deux calques d'étoiles (petites/grandes)
+   qui scintillent lentement en décalé, placés derrière le contenu. */
+.starry {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.starry::before,
+.starry::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: repeat;
+}
+.starry::before {
+  background-size: 320px 260px;
+  background-image:
+    radial-gradient(1px 1px at 12px 30px, #fff, transparent),
+    radial-gradient(1px 1px at 70px 160px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1.5px 1.5px at 130px 70px, #fff, transparent),
+    radial-gradient(1px 1px at 190px 210px, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1px 1px at 250px 110px, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 290px 20px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 40px 230px, rgba(255, 255, 255, 0.7), transparent);
+  opacity: 0.55;
+  animation: starry-twinkle 7s ease-in-out infinite;
+}
+.starry::after {
+  background-size: 410px 340px;
+  background-image:
+    radial-gradient(2px 2px at 50px 90px, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 160px 260px, rgba(255, 255, 255, 0.9), transparent),
+    radial-gradient(2px 2px at 260px 170px, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 340px 60px, rgba(255, 220, 190, 0.9), transparent),
+    radial-gradient(1.5px 1.5px at 100px 310px, rgba(255, 255, 255, 0.8), transparent);
+  opacity: 0.35;
+  animation: starry-twinkle 11s ease-in-out -4s infinite;
+}
+@keyframes starry-twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.8; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .starry::before,
+  .starry::after { animation: none; }
+}
+@media print {
+  .starry::before,
+  .starry::after { display: none; }
+}

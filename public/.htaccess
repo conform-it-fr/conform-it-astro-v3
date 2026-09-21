@@ -1,0 +1,166 @@
+RewriteEngine On
+
+# ── Canonicalisation du domaine : tout ce qui n'est pas www.conform-it.fr ──
+# ── est redirigé en 301 vers www (évite le contenu dupliqué www / non-www). ──
+RewriteCond %{HTTP_HOST} !^www\.conform-it\.fr$ [NC]
+RewriteRule ^(.*)$ https://www.conform-it.fr/$1 [R=301,L]
+
+# ── Pages déplacées / fusionnées (vérifié contre le sitemap Publii) ──
+RewriteRule ^a-propos/?$ /presentation-de-conform-it/ [R=301,L]
+
+# ── Refonte tarifaire 08/2026 : tunnel IA (3 pages) fusionné dans /offre/ ──
+RewriteRule ^audit-des-systemes-ia/?$ /offre/ [R=301,L]
+RewriteRule ^mise-en-conformite-ia/?$ /offre/ [R=301,L]
+RewriteRule ^pilotage-des-systemes-ia/?$ /offre/ [R=301,L]
+
+# ── CGV retirées (08/2026) : les conditions de vente ne concernent pas ce site ──
+RewriteRule ^cgv/?$ /cgu/ [R=301,L]
+
+RewriteRule ^accueil/?$ / [R=301,L]
+RewriteRule ^diagnostic-and-mise-en-conformite-nis2/?$ /autres-conformites/ [R=301,L]
+RewriteRule ^formations/formation-a-la-sobriete-numerique/?$ /formations/ [R=301,L]
+RewriteRule ^formations/formation-action-conformite-andamp-resilience-numerique-approche-integree-pour-collectivites-et-organisations/?$ /formations/ [R=301,L]
+RewriteRule ^formations/formation-conformite-des-sites-internet-niveau-avance/?$ /formations/ [R=301,L]
+RewriteRule ^formations/formation-conformite-des-sites-internet-premiere-approche/?$ /formations/ [R=301,L]
+RewriteRule ^formations-2/sensibilisation-a-la-protection-des-donnees/?$ /formations/ [R=301,L]
+RewriteRule ^formations-2/?$ /formations/ [R=301,L]
+RewriteRule ^contact-2/?$ /contact/ [R=301,L]
+RewriteRule ^category/uncategorized/?$ /articles/ [R=301,L]
+RewriteRule ^index\.php/methodes/?$ /presentation-de-conform-it/ [R=301,L]
+RewriteRule ^index\.php/2025/07/18/hello-world/?$ / [R=301,L]
+RewriteRule ^formulaire-rgaa/?$ /service-en-ligne/formulaire-rgaa/ [R=301,L]
+RewriteRule ^mentions-obligatoires/?$ /plan-du-site/ [R=301,L]
+RewriteRule ^mentions-obligatoires/cgu/?$ /cgu/ [R=301,L]
+RewriteRule ^mentions-obligatoires/conditions-generales-de-vente/?$ /cgu/ [R=301,L]
+RewriteRule ^mentions-obligatoires/declaration-daccessibilite/?$ /declaration-daccessibilite/ [R=301,L]
+RewriteRule ^mentions-obligatoires/declaration-daccessibilite-2/?$ /declaration-daccessibilite/ [R=301,L]
+RewriteRule ^mentions-obligatoires/mentions-legales/?$ /mentions-legales/ [R=301,L]
+RewriteRule ^mentions-obligatoires/plan-du-site/?$ /plan-du-site/ [R=301,L]
+RewriteRule ^mentions-obligatoires/politique-de-confidentialite/?$ /politique-de-confidentialite/ [R=301,L]
+RewriteRule ^mentions-obligatoires/politique-de-gestion-des-cookies/?$ /politique-de-gestion-des-cookies/ [R=301,L]
+RewriteRule ^nos-offres/?$ /offre/ [R=301,L]
+RewriteRule ^offres/?$ /offre/ [R=301,L]
+RewriteRule ^offres/accompagnement-des-collectivites-et-organisations-publiques/?$ /collectivites/ [R=301,L]
+RewriteRule ^offres/audit-des-systemes-ia/?$ /offre/ [R=301,L]
+RewriteRule ^offres/audit-dora/?$ /audit-dora/ [R=301,L]
+RewriteRule ^offres/cadre-dusage-responsable-de-lintelligence-artificielle/?$ /cadre-dusage-responsable-de-lintelligence-artificielle/ [R=301,L]
+RewriteRule ^offres/charte-dutilisation-de-lia-dans-lorganisation/?$ /cadre-dusage-responsable-de-lintelligence-artificielle/ [R=301,L]
+RewriteRule ^offres/conformite-numerique-pour-les-collectivites/?$ /collectivites/ [R=301,L]
+RewriteRule ^offres/conformite-numerique-pour-les-pme/?$ /offre/ [R=301,L]
+RewriteRule ^offres/diagnostic-confiance-numerique/?$ /offre/ [R=301,L]
+RewriteRule ^offres/mise-en-conformite-ia/?$ /offre/ [R=301,L]
+RewriteRule ^offres/pilotage-des-systemes-ia/?$ /offre/ [R=301,L]
+RewriteRule ^offres/pre-diagnostic-rgpd/?$ /autres-conformites/ [R=301,L]
+RewriteRule ^offres/programme-conformite-numerique/?$ /offre/ [R=301,L]
+RewriteRule ^page/2/?$ /articles/ [R=301,L]
+RewriteRule ^service-en-ligne/articles-du-service-en-ligne/?$ /service-en-ligne/ [R=301,L]
+RewriteRule ^service-en-ligne/confirmation-envoi/?$ /service-en-ligne/ [R=301,L]
+RewriteRule ^services/?$ /offre/ [R=301,L]
+RewriteRule ^services/accompagnement-a-la-conformite-rgaa/?$ /audit-rgaa/ [R=301,L]
+RewriteRule ^services/creation-de-sites-web-vitrine-eco-conception-accessibilite/?$ /offre/ [R=301,L]
+RewriteRule ^services/pilotage-de-projets/?$ /offre/ [R=301,L]
+RewriteRule ^services-2/?$ /offre/ [R=301,L]
+RewriteRule ^services-2/accompagnement-a-la-conformite-rgaa/?$ /audit-rgaa/ [R=301,L]
+RewriteRule ^services-2/creation-de-sites-web-vitrine-eco-conception-accessibilite/?$ /offre/ [R=301,L]
+RewriteRule ^services-2/pilotage-de-projets/?$ /offre/ [R=301,L]
+RewriteRule ^services-2/eco-conception-des-services-numeriques-2/?$ /articles/accompagnement-a-l-eco-conception-des-services-numeriques/ [R=301,L]
+
+# ── Articles migrés (slug renommé ou déplacé sous /articles/) ──
+RewriteRule ^ia_dpo_rsssi_rcia/?$ /articles/ia-dpo-rssi-rcia/ [R=301,L]
+RewriteRule ^rgaa-collectivite-territoriale/?$ /articles/rgaa-et-collectivites-territoriales-sans-accessibilite-numerique-ou-est-legalite-pour-tous-les-citoyens/ [R=301,L]
+RewriteRule ^etude-sur-laccessibilite-rgaa-de-nos-principales-collectivites-territoriales-en-region-hauts-de-france/?$ /articles/ [R=301,L]
+RewriteRule ^hara-et-intelligence-artificielle-une-methode-structuree-pour-maitriser-les-risques/?$ /articles/hara-et-intelligence-artificielle-une-methode-structuree-pour-maitriser-les-risques/ [R=301,L]
+
+# ── Articles migrés individuellement (redirection précise vers leur nouvelle page) ──
+RewriteRule ^sanctions/?$ /articles/sanctions/ [R=301,L]
+RewriteRule ^article-modele-3/?$ /articles/octobre-2025-cybermois-engageons-nous-pour-la-cybersecurite/ [R=301,L]
+RewriteRule ^article-modele-4/?$ /articles/pyramide-de-maturite-numerique-les-3-paliers-pour-une-mise-en-conformite-globale/ [R=301,L]
+RewriteRule ^article-modele-6/?$ /articles/accompagnement-a-la-conformite-des-sites-internet/ [R=301,L]
+RewriteRule ^article-modele-7/?$ /articles/accompagnement-a-la-conformite-rgaa/ [R=301,L]
+RewriteRule ^article-modele-8/?$ /articles/accompagnement-a-l-eco-conception-des-services-numeriques/ [R=301,L]
+RewriteRule ^article-modele-10/?$ /articles/ [R=301,L]
+RewriteRule ^article-modele-11/?$ /articles/ [R=301,L]
+RewriteRule ^article-modele-12/?$ /articles/ [R=301,L]
+RewriteRule ^article-modele-14/?$ /offre/ [R=301,L]
+RewriteRule ^conformite-des-sites-internet/?$ /articles/accompagnement-a-la-conformite-des-sites-internet/ [R=301,L]
+RewriteRule ^conformite-des-sites-internet-4/?$ /articles/accompagnement-a-la-conformite-rgaa/ [R=301,L]
+RewriteRule ^conformite-des-sites-internet-6/?$ /articles/formation-conformite-des-sites-internet-niveau-avance/ [R=301,L]
+RewriteRule ^conformite-des-sites-internet-7/?$ /articles/ [R=301,L]
+RewriteRule ^conformite-des-sites-internet-8/?$ /articles/ [R=301,L]
+RewriteRule ^article-modele-13/?$ /articles/eco-conception-et-site-statique-comment-faire-passer-l-ecoindex-de-d-a-a-pour-un-meme-site/ [R=301,L]
+RewriteRule ^dynamique-ou-statique/?$ /articles/dynamique-ou-statique/ [R=301,L]
+RewriteRule ^article-modele-14-2/?$ /articles/pilotage-de-projets-moa-ou-moe-methode-agile-et-ou-cycle-en-v/ [R=301,L]
+RewriteRule ^visionneuse-resultats/?$ /articles/visionneuse-resultats/ [R=301,L]
+RewriteRule ^comprendre-mes-resultats-de-test/?$ /articles/comprendre-mes-resultats-de-test/ [R=301,L]
+RewriteRule ^comprendre-le-rgaa/?$ /articles/comprendre-le-rgaa/ [R=301,L]
+RewriteRule ^comprendre-les-exigences-pour-un-web-accessible/?$ /articles/comprendre-les-exigences-pour-un-web-accessible/ [R=301,L]
+RewriteRule ^comprendre-simplement-le-langage-aria-et-son-role-dans-laccessibilite-web/?$ /articles/comprendre-simplement-le-langage-aria-et-son-role-dans-laccessibilite-web/ [R=301,L]
+RewriteRule ^comprendre-la-structure-du-rgaa-chapitres-criteres-indicateurs-et-tests/?$ /articles/comprendre-la-structure-du-rgaa-chapitres-criteres-indicateurs-et-tests/ [R=301,L]
+RewriteRule ^chapitre-1-du-rgaa-rendre-les-images-accessibles-a-tous/?$ /articles/chapitre-1-du-rgaa-rendre-les-images-accessibles-a-tous/ [R=301,L]
+RewriteRule ^chapitre-2-du-rgaa-cadres-frames-comprendre-et-rendre-accessibles-les-contenus-integres/?$ /articles/chapitre-2-du-rgaa-cadres-frames-comprendre-et-rendre-accessibles-les-contenus-integres/ [R=301,L]
+RewriteRule ^chapitre-3-du-rgaa-couleurs-garantir-une-information-perceptible-par-tous/?$ /articles/chapitre-3-du-rgaa-couleurs-garantir-une-information-perceptible-par-tous/ [R=301,L]
+RewriteRule ^chapitre-4-du-rgaa-multimedia-rendre-les-contenus-audio-et-video-accessibles/?$ /articles/chapitre-4-du-rgaa-multimedia-rendre-les-contenus-audio-et-video-accessibles/ [R=301,L]
+RewriteRule ^chapitre-5-du-rgaa-tableaux-structurer-les-donnees-pour-une-lecture-accessible/?$ /articles/chapitre-5-du-rgaa-tableaux-structurer-les-donnees-pour-une-lecture-accessible/ [R=301,L]
+RewriteRule ^chapitre-6-du-rgaa-liens-rendre-la-navigation-comprehensible-et-explicite/?$ /articles/chapitre-6-du-rgaa-liens-rendre-la-navigation-comprehensible-et-explicite/ [R=301,L]
+RewriteRule ^chapitre-7-du-rgaa-scripts-rendre-les-interfaces-dynamiques-accessibles/?$ /articles/chapitre-7-du-rgaa-scripts-rendre-les-interfaces-dynamiques-accessibles/ [R=301,L]
+RewriteRule ^chapitre-8-du-rgaa-elements-obligatoires-poser-les-bases-techniques-de-laccessibilite/?$ /articles/chapitre-8-du-rgaa-elements-obligatoires-poser-les-bases-techniques-de-laccessibilite/ [R=301,L]
+RewriteRule ^chapitre-9-du-rgaa-structuration-de-linformation-organiser-le-contenu-pour-une-navigation-claire/?$ /articles/chapitre-9-du-rgaa-structuration-de-linformation-organiser-le-contenu-pour-une-navigation-claire/ [R=301,L]
+RewriteRule ^chapitre-10-du-rgaa-presentation-de-linformation-separer-le-fond-et-la-forme/?$ /articles/chapitre-10-du-rgaa-presentation-de-linformation-separer-le-fond-et-la-forme/ [R=301,L]
+RewriteRule ^chapitre-11-du-rgaa-formulaires-rendre-la-saisie-accessible-et-comprehensible/?$ /articles/chapitre-11-du-rgaa-formulaires-rendre-la-saisie-accessible-et-comprehensible/ [R=301,L]
+RewriteRule ^chapitre-12-du-rgaa-navigation-permettre-a-tous-de-se-reperer-et-se-deplacer-efficacement/?$ /articles/chapitre-12-du-rgaa-navigation-permettre-a-tous-de-se-reperer-et-se-deplacer-efficacement/ [R=301,L]
+RewriteRule ^chapitre-13-du-rgaa-consultation-garantir-un-acces-universel-aux-contenus-et-aux-fonctionnalites/?$ /articles/chapitre-13-du-rgaa-consultation-garantir-un-acces-universel-aux-contenus-et-aux-fonctionnalites/ [R=301,L]
+RewriteRule ^la-declaration-daccessibilite-role-contenu-et-obligations/?$ /articles/la-declaration-daccessibilite-role-contenu-et-obligations/ [R=301,L]
+RewriteRule ^le-schema-pluriannuel-daccessibilite-piloter-la-demarche-dans-la-duree/?$ /articles/le-schema-pluriannuel-daccessibilite-piloter-la-demarche-dans-la-duree/ [R=301,L]
+RewriteRule ^le-plan-daction-annuel-rendre-operationnelle-la-strategie-daccessibilite/?$ /articles/le-plan-daction-annuel-rendre-operationnelle-la-strategie-daccessibilite/ [R=301,L]
+RewriteRule ^accompagnement-rgaa-organismes-publics/?$ /articles/accompagnement-rgaa-organismes-publics/ [R=301,L]
+RewriteRule ^rgaa-esn-agences-web/?$ /articles/rgaa-esn-agences-web/ [R=301,L]
+RewriteRule ^accessibilite-site-ecommerce/?$ /articles/accessibilite-site-ecommerce/ [R=301,L]
+RewriteRule ^declaration-daccessibilite-rgaa-redaction-conforme-et-publication-securisee/?$ /articles/declaration-daccessibilite-rgaa-redaction-conforme-et-publication-securisee/ [R=301,L]
+RewriteRule ^mise-en-conformite-rgaa/?$ /articles/mise-en-conformite-rgaa/ [R=301,L]
+RewriteRule ^eco-conception-numerique/?$ /articles/eco-conception-numerique/ [R=301,L]
+RewriteRule ^conformite-site-wordpress/?$ /articles/conformite-site-wordpress/ [R=301,L]
+RewriteRule ^rgaa-et-collectivites-territoriales-sans-accessibilite-numerique-ou-est-legalite-pour-tous-les-citoyens/?$ /articles/rgaa-et-collectivites-territoriales-sans-accessibilite-numerique-ou-est-legalite-pour-tous-les-citoyens/ [R=301,L]
+RewriteRule ^-2/?$ /articles/rgaa-et-tpe-pme-pourquoi-les-entreprises-ont-tout-a-gagner/ [R=301,L]
+RewriteRule ^-3/?$ /articles/ [R=301,L]
+RewriteRule ^rgaa-tpepme/?$ /articles/rgaa-et-tpe-pme-pourquoi-les-entreprises-ont-tout-a-gagner/ [R=301,L]
+RewriteRule ^site-web-conformite/?$ /articles/un-site-web-ce-nest-pas-que-design-et-technique-cest-aussi-conformite/ [R=301,L]
+RewriteRule ^utiliser-les-fichiers-de-resultats/?$ /articles/visionneuse-resultats/ [R=301,L]
+RewriteRule ^un-site-conforme-et-accessible-cest-50-dopportunites-en-plus/?$ /articles/un-site-conforme-et-accessible-cest-50-dopportunites-en-plus/ [R=301,L]
+RewriteRule ^un-site-web-ce-nest-pas-que-design-et-technique-cest-aussi-conformite/?$ /articles/un-site-web-ce-nest-pas-que-design-et-technique-cest-aussi-conformite/ [R=301,L]
+RewriteRule ^ai-act-ce-que-les-dirigeants-doivent-vraiment-comprendre/?$ /articles/ai-act-ce-que-les-dirigeants-doivent-vraiment-comprendre/ [R=301,L]
+RewriteRule ^nis2-pour-dirigeants-ce-que-vous-devez-vraiment-comprendre-sans-jargon/?$ /articles/nis2-pour-dirigeants-ce-que-vous-devez-vraiment-comprendre-sans-jargon/ [R=301,L]
+RewriteRule ^quest-ce-quun-systeme-dintelligence-artificielle/?$ /articles/quest-ce-quun-systeme-dintelligence-artificielle/ [R=301,L]
+RewriteRule ^les-donnees-carburant-de-lia-qualite-biais-rgpd-gouvernance/?$ /articles/les-donnees-carburant-de-lia-qualite-biais-rgpd-gouvernance/ [R=301,L]
+
+# ── Catégorie de blog renommée (10/09/2026) ──
+RewriteRule ^articles/categorie/conformite-des-sites-sobriete/?$ /articles/categorie/conformite-des-sites/ [R=301,L]
+
+# ── Filet générique final : tout /offres/* orphelin restant ──
+RewriteRule ^offres/(.*)$ /offre/ [R=301,L]
+
+# ── Page 404 personnalisée (Astro génère /404.html, pas /404/index.html) ──
+ErrorDocument 404 /404.html
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # CSS / JS
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/x-javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+
+  # IMAGES
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|png|jpg|jpeg|gif|webp|svg|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>

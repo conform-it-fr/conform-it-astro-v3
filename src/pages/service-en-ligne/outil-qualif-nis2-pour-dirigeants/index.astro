@@ -1,0 +1,121 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Section from "../../../components/Section.astro";
+import QuizForm from "../../../components/QuizForm.astro";
+import QuizGroup from "../../../components/QuizGroup.astro";
+import QuizQuestion from "../../../components/QuizQuestion.astro";
+
+const secteurOptions = [
+  { value: "3", label: "Collectivité / Administration publique" },
+  { value: "3", label: "Energie" },
+  { value: "3", label: "Eaux potables ou usées" },
+  { value: "3", label: "Transport" },
+  { value: "3", label: "Secteur bancaire" },
+  { value: "3", label: "Etablissement des crédits" },
+  { value: "3", label: "Santé" },
+  { value: "3", label: "Infrastructure numérique" },
+  { value: "3", label: "Gestion des services TIC" },
+  { value: "3", label: "Espace" },
+  { value: "3", label: "Infrastructure des marchés financiers" },
+  { value: "2", label: "Services postaux ou d'expédition" },
+  { value: "2", label: "Gestion des déchets" },
+  { value: "2", label: "Fabrication, production et distribution de produits chimiques" },
+  { value: "2", label: "Agro-alimentaire" },
+  { value: "2", label: "Industrie manufacturière" },
+  { value: "2", label: "Fournisseurs numériques" },
+  { value: "2", label: "Organismes de recherche" },
+  { value: "1", label: "Autre" },
+];
+---
+
+<BaseLayout
+  title="Pré-qualification NIS2"
+  description="Évaluez rapidement le niveau de préparation de votre organisation face aux exigences européennes NIS2 en matière de cybersécurité."
+>
+  <Section as="h1"
+    tone="white"
+    eyebrow="Pré-qualification gratuite · 12 questions · 5 minutes"
+    title="Outil de pré-qualification stratégique NIS2"
+    description="Répondez à 12 questions et obtenez immédiatement le niveau d'exposition de votre organisation aux exigences européennes NIS2."
+  >
+    <QuizForm
+      formId="nis2Form"
+      endpoint="https://audit.conform-it.fr/nis2/prequal_nis2.php"
+      submitLabel="Obtenir mon résultat NIS2 →"
+      theme="nis2"
+      contexte="La directive (UE) 2022/2555 (NIS2) élargit fortement le périmètre des obligations de cybersécurité : nouveaux secteurs, seuils de taille, responsabilité directe des dirigeants, mesures de gestion des risques et notification des incidents sous 24 h. Sa transposition en droit français est en cours. Cette pré-qualification ne remplace pas une analyse juridique d'assujettissement."
+    >
+      <QuizGroup title="Éligibilité NIS2" range="Q1 – Q5">
+        <QuizQuestion name="effectif" legend="Q1. Quelle est la taille de votre organisation ?" options={[
+          { value: "0", label: "Moins de 50 salariés" },
+          { value: "2", label: "50 à 249 salariés" },
+          { value: "3", label: "250 salariés et plus" },
+        ]} />
+
+        <QuizQuestion name="ca" legend="Q2. Où se situe votre chiffre d'affaires annuel ?" options={[
+          { value: "0", label: "Moins de 10 M€" },
+          { value: "2", label: "Plus de 10 M€" },
+          { value: "3", label: "Plus de 50 M€" },
+        ]} />
+
+        <QuizQuestion name="bilan" legend="Q3. Où se situe votre bilan annuel ?" options={[
+          { value: "0", label: "Moins de 10 M€" },
+          { value: "2", label: "Plus de 10 M€" },
+          { value: "3", label: "Plus de 43 M€" },
+        ]} />
+
+        <QuizQuestion name="secteur" legend="Q4. Quel est votre secteur d'activité principal ?" options={secteurOptions} />
+
+        <QuizQuestion name="impact" legend="Q5. Fournissez-vous un service dont l'interruption aurait un impact majeur sur vos clients ou partenaires ?" options={[
+          { value: "3", label: "Oui" },
+          { value: "0", label: "Non" },
+          { value: "2", label: "Je ne sais pas" },
+        ]} />
+      </QuizGroup>
+
+      <QuizGroup title="Gouvernance & responsabilité du dirigeant" range="Q6 – Q7">
+        <QuizQuestion name="rssi" legend="Q6. Un responsable cybersécurité (RSSI ou équivalent) est-il formellement désigné ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "2", label: "Non" },
+        ]} />
+
+        <QuizQuestion name="risque" legend="Q7. Avez-vous réalisé une analyse de risques cyber formalisée au cours des 24 derniers mois ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "2", label: "Non" },
+          { value: "1", label: "Partiellement" },
+        ]} />
+      </QuizGroup>
+
+      <QuizGroup title="Capacité opérationnelle" range="Q8 – Q12">
+        <QuizQuestion name="incident" legend="Q8. Disposez-vous d'une procédure formalisée de gestion d'incident cyber, testée au cours des 24 derniers mois ?" options={[
+          { value: "0", label: "Oui, testée récemment" },
+          { value: "1", label: "Oui, non testée" },
+          { value: "3", label: "Non formalisée" },
+        ]} />
+
+        <QuizQuestion name="notif" legend="Q9. Êtes-vous en capacité d'effectuer une notification initiale sous 24h avec les éléments requis ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "2", label: "Partiellement" },
+          { value: "3", label: "Non" },
+        ]} />
+
+        <QuizQuestion name="fournisseurs" legend="Q10. Les fournisseurs IT critiques font-ils l'objet d'une évaluation de cybersécurité formalisée ?" options={[
+          { value: "0", label: "Oui, contractuelle et évaluée" },
+          { value: "1", label: "Clauses partielles" },
+          { value: "2", label: "Pas systématiquement" },
+        ]} />
+
+        <QuizQuestion name="pca" legend="Q11. Un plan de continuité d'activité (PCA) et/ou de reprise informatique (PRI) couvrent-ils vos systèmes critiques et sont-ils testés régulièrement ?" options={[
+          { value: "0", label: "Oui, testé" },
+          { value: "1", label: "Oui, non testé" },
+          { value: "3", label: "Non" },
+        ]} />
+
+        <QuizQuestion name="direction" legend="Q12. Les dirigeants sont-ils formellement informés des risques cyber au moins une fois par an ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "2", label: "Non" },
+        ]} />
+      </QuizGroup>
+    </QuizForm>
+  </Section>
+</BaseLayout>

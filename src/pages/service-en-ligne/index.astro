@@ -1,0 +1,117 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import ThemeBadge from "../../components/ThemeBadge.astro";
+import { prediagnostics } from "../../data/prediagnostics";
+
+// Couleur dominante de chaque badge (cercle central) — reprise sur le bouton « Démarrer ».
+const THEME_COLOR: Record<string, string> = {
+  "intelligence-artificielle": "#7F77DD",
+  rgpd: "#378ADD",
+  cybersecurite: "#E24B4A",
+  nis2: "#BA7517",
+  "non-discrimination": "#888780",
+  harcelement: "#D4537E",
+  "anti-corruption": "#D85A30",
+  "sobriete-numerique": "#639922",
+  "conformite-web": "#1D9E75",
+  dora: "#4A5BC7",
+};
+const DEFAULT_COLOR = "#0519ad"; // outils sans thématique du catalogue
+
+const outilsFixes = [
+  {
+    title: "PréQualIA — Testez votre maturité IA",
+    description: "9 questions pour situer la maturité IA de votre entreprise au regard de l'AI Act. Résultat immédiat, recommandations personnalisées.",
+    href: "/service-en-ligne/outil-qualif-ia-pour-dirigeants/",
+    theme: "intelligence-artificielle",
+  },
+  {
+    title: "Pré-diagnostic RGPD",
+    description: "En 12 questions, situez la maturité de votre organisation au regard du RGPD : gouvernance, licéité des traitements, sécurité, sous-traitance, violations de données.",
+    href: "/service-en-ligne/outil-qualif-rgpd-pour-dirigeants/",
+    theme: "rgpd",
+  },
+  {
+    title: "Pré-qualification NIS2",
+    description: "Évaluez rapidement le niveau de préparation de votre organisation face aux exigences européennes NIS2.",
+    href: "/service-en-ligne/outil-qualif-nis2-pour-dirigeants/",
+    theme: "nis2",
+  },
+  {
+    title: "Pré-qualification DORA",
+    description: "Évaluez si votre organisation est concernée par le règlement DORA et votre niveau d'exposition.",
+    href: "/service-en-ligne/outil-qualif-dora-pour-dirigeants/",
+    theme: "dora",
+  },
+  {
+    title: "Test d'accessibilité RGAA gratuit",
+    description: "Un premier diagnostic automatique de l'accessibilité de votre site, sur la base du RGAA 4.1.",
+    href: "/service-en-ligne/formulaire-rgaa/",
+    theme: "conformite-web",
+  },
+];
+
+const outilsPrediag = prediagnostics.map((p) => ({
+  title: p.titre,
+  description: p.cardDescription,
+  href: `/service-en-ligne/${p.slug}/`,
+  theme: p.theme as string | undefined,
+}));
+
+const tools = [...outilsFixes, ...outilsPrediag].map((t) => ({
+  ...t,
+  color: (t.theme && THEME_COLOR[t.theme]) || DEFAULT_COLOR,
+}));
+---
+
+<BaseLayout title="Testez votre conformité : RGPD, IA, cybersécurité" description="Auto-évaluations gratuites pour situer votre organisation sur un sujet de conformité : IA, RGPD, cybersécurité, NIS2 et plus.">
+  <Section as="h1"
+    tone="white"
+    eyebrow="Nos outils"
+    title="Des auto-évaluations gratuites, pour un premier état des lieux"
+    description="Quelques minutes pour situer votre organisation sur un sujet et repérer les priorités. La plupart se font entièrement dans votre navigateur, sans transmettre de données."
+  >
+    <div class="grid gap-6 md:grid-cols-2">
+      {tools.map((tool) => (
+        <a
+          href={tool.href}
+          class="tool-card group flex items-stretch gap-4 rounded-2xl border border-slate-100 bg-cream-50 p-5 shadow-sm transition-shadow hover:shadow-md sm:gap-5 sm:p-6"
+        >
+          <div class="flex min-w-0 flex-1 flex-col">
+            <div class="flex items-start gap-3">
+              {tool.theme && (
+                <span class="w-11 flex-none sm:w-12" aria-hidden="true">
+                  <ThemeBadge slug={tool.theme} />
+                </span>
+              )}
+              <h2 class="text-base font-semibold leading-snug text-slate-900 sm:text-lg">{tool.title}</h2>
+            </div>
+            <p class="mt-3 text-sm leading-relaxed text-slate-600">{tool.description}</p>
+          </div>
+
+          <div class="flex flex-none items-center">
+            <span
+              class="tool-cta inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold text-white transition group-hover:brightness-90"
+              style={`background-color:${tool.color}`}
+            >
+              Démarrer <span aria-hidden="true">→</span>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </Section>
+
+  <style>
+    /* Sur mobile : le bouton passe sous le texte, aligné à droite. */
+    @media (max-width: 500px) {
+      .tool-card {
+        flex-direction: column;
+      }
+      .tool-card > div:last-child {
+        align-items: flex-end;
+      }
+    }
+  </style>
+</BaseLayout>

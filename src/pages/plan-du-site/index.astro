@@ -1,0 +1,94 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import { getCollection } from "astro:content";
+import { themes } from "../../data/themes";
+
+const posts = (await getCollection("blog", (post) => !post.data.hidden)).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+type SiteLink = { label: string; href: string; external?: boolean };
+
+const sections: { title: string; links: SiteLink[] }[] = [
+  {
+    title: "Pages principales",
+    links: [
+      { label: "Accueil", href: "/" },
+      { label: "Catalogue de formations", href: "/formations/" },
+      { label: "Tarifs entreprises", href: "/offre/" },
+      { label: "Nos outils", href: "/service-en-ligne/" },
+      { label: "Ariane FP², la plateforme conform-IT", href: "/ariane/" },
+      { label: "Voir la plateforme", href: "https://elearning.conform-it.fr", external: true },
+      { label: "Demander une démo", href: "/contact/?type=demande_demo&subject=Demande%20de%20d%C3%A9mo" },
+      { label: "Notre blog", href: "/articles/" },
+      { label: "À propos", href: "/presentation-de-conform-it/" },
+      { label: "Contact", href: "/contact/" },
+    ],
+  },
+  {
+    title: "Catalogue par thème",
+    links: [
+      ...themes.map((t) => ({ label: t.titre, href: `/formations/${t.slug}/` })),
+      { label: "Cadre d'usage & charte IA (article 4 AI Act)", href: "/cadre-dusage-responsable-de-lintelligence-artificielle/" },
+    ],
+  },
+  {
+    title: "Autres besoins",
+    links: [
+      { label: "Particuliers", href: "/particuliers/" },
+      { label: "Collectivités & secteur public", href: "/collectivites/" },
+      { label: "Autres conformités (NIS2, DORA, RGAA)", href: "/autres-conformites/" },
+      { label: "Audit de conformité DORA", href: "/audit-dora/" },
+      { label: "Audit RGAA", href: "/audit-rgaa/" },
+    ],
+  },
+  {
+    title: "Informations légales",
+    links: [
+      { label: "Mentions légales", href: "/mentions-legales/" },
+      { label: "Politique de confidentialité", href: "/politique-de-confidentialite/" },
+      { label: "Politique de gestion des cookies", href: "/politique-de-gestion-des-cookies/" },
+      { label: "Conditions générales d'utilisation", href: "/cgu/" },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Plan du site" description="Plan du site conform-IT.">
+  <Section as="h1" tone="white" eyebrow="Navigation" title="Plan du site">
+    <div class="mx-auto grid max-w-3xl gap-8 sm:grid-cols-2">
+      {sections.map((section) => (
+        <div>
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-terracotta-600">{section.title}</h2>
+          <ul class="mt-3 space-y-2 text-sm">
+            {section.links.map((link) => (
+              <li>
+                <a
+                  class="inline-flex items-center gap-1.5 text-accent-600 hover:underline"
+                  href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
+                  aria-label={link.external ? `${link.label} (nouvel onglet)` : undefined}
+                >
+                  {link.label}
+                  {link.external && (
+                    <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+      <div>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-terracotta-600">Articles</h2>
+        <ul class="mt-3 space-y-2 text-sm">
+          {posts.map((post) => (
+            <li><a class="text-accent-600 hover:underline" href={`/articles/${post.id}/`}>{post.data.title}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

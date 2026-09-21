@@ -1,0 +1,436 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import Button from "../../components/Button.astro";
+import ThemeBadge from "../../components/ThemeBadge.astro";
+import { themes } from "../../data/themes";
+
+// Présentation du forfait en 3 temps : ce qui est formé, ce qui est piloté, ce qui est prouvé.
+const forfaitBlocs = [
+  {
+    titre: "Formé — tout le catalogue",
+    points: [
+      "Accès illimité aux 9 thématiques, pour tous vos collaborateurs",
+      "Un parcours adapté à chaque rôle : dirigeants, usagers, managers, créateurs",
+      "Veille réglementaire, mises à jour du contenu et nouveaux arrivants pris en compte en cours d'année",
+    ],
+  },
+  {
+    titre: "Piloté — les outils de gouvernance inclus",
+    points: [
+      "Votre espace d'administration : comptes, affectations, suivi de l'avancement",
+      "Les pré-diagnostics et tests de maturité pour situer chaque sujet et prioriser",
+      "Support, réponses sous 2 jours ouvrés",
+    ],
+  },
+  {
+    titre: "Prouvé — votre preuve d'audit",
+    points: [
+      "Un badge horodaté à chaque formation validée",
+      "Le registre exportable : qui a été formé, quand, sur quoi",
+    ],
+  },
+];
+
+const journeesAccompagnement = [
+  "Séance dirigeants — ½ journée",
+  "Atelier usagers — ½ journée par groupe de 12",
+  "Atelier managers — ½ journée par groupe de 12",
+  "Atelier créateurs — 1 journée, groupe de 8",
+  "Règles d'usage et revue de vos usages — 1 journée",
+  "Point de suivi à 6 mois — ½ journée",
+];
+
+const optionMiseEnOeuvre = [
+  "Registre RGPD : fiches de traitement, structuration, mise en production",
+  "Cartographie des systèmes d'IA et qualification au regard de l'AI Act",
+  "Structuration du dispositif de conformité : rôles, procédures, plan d'action",
+  "Intervention ponctuelle ou mission cadrée, à distance ou sur site",
+];
+
+const devisMiseEnOeuvreHref = `/contact/?type=devis_pilotage&subject=${encodeURIComponent(
+  "Demande d'analyse - accompagnement pilotage",
+)}`;
+---
+
+<BaseLayout
+  title="Tarifs entreprises — Forfait plateforme"
+  description="Forfait plateforme conform-IT : 1 990 € + 19 €/salarié/an. Tout le catalogue inclus, badges et registre exportable d'audit."
+>
+  <Section as="h1"
+    tone="white"
+    eyebrow="Tarifs entreprises"
+    title="Un forfait : le catalogue, les outils de pilotage et la preuve d'audit"
+    description="Vos équipes se forment sur tout le catalogue, vous pilotez le déploiement avec les outils de gouvernance inclus, et vous gardez un registre exportable : qui a été formé, quand, sur quoi."
+  >
+    <div class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]">
+      <!-- Forfait plateforme -->
+      <div class="relative scroll-mt-24 rounded-2xl border-2 border-terracotta-500 bg-cream-50 p-6 shadow-sm sm:p-8">
+        <span class="absolute -top-3 left-6 rounded-full bg-terracotta-600 px-3 py-1 text-xs font-semibold text-cream-50">L'offre entreprise</span>
+        <h2 class="mt-4 text-lg font-semibold text-slate-900">Forfait plateforme</h2>
+        <p class="mt-2 text-sm text-slate-600">
+          Abonnement annuel qui s'ajuste à votre effectif. En un seul forfait : vos équipes se{" "}
+          <strong class="text-slate-900">forment</strong> sur tout le catalogue, vous{" "}
+          <strong class="text-slate-900">pilotez</strong> le déploiement avec les outils de gouvernance
+          inclus, et vous gardez la <strong class="text-slate-900">preuve</strong> — badges horodatés et
+          registre exportable.
+        </p>
+        <div class="mt-5 flex flex-wrap items-baseline gap-x-2">
+          <span class="text-2xl font-bold text-accent-600">1 990 €</span>
+          <span class="text-sm text-slate-500">+ 19 € / salarié / an</span>
+        </div>
+        <p class="text-sm text-slate-500">soit environ 3 300 € / an pour 70 salariés</p>
+        <div class="mt-5 space-y-5">
+          {forfaitBlocs.map((bloc) => (
+            <div>
+              <h3 class="text-sm font-semibold text-slate-900">{bloc.titre}</h3>
+              <ul class="mt-2 space-y-1.5 text-sm text-slate-700">
+                {bloc.points.map((item) => (
+                  <li class="flex gap-2">
+                    <svg aria-hidden="true" focusable="false" class="mt-0.5 h-4 w-4 flex-none text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Accompagnement -->
+      <div class="scroll-mt-24 rounded-2xl border border-slate-200 bg-cream-50 p-6 shadow-sm sm:p-8">
+        <h2 class="mt-4 text-lg font-semibold text-slate-900">Accompagnement sur site</h2>
+        <p class="mt-2 text-sm text-slate-600">
+          Facultatif, en plus du forfait — jamais un prérequis. Pour l'usage courant des outils, la
+          plateforme rend vos équipes autonomes ; cette option fait gagner du temps, ou rassure quand vos
+          usages engagent l'entreprise : recrutement, relation client, outils conçus en interne.
+        </p>
+        <div class="mt-5 flex flex-wrap items-baseline gap-x-2">
+          <span class="text-2xl font-bold text-terracotta-600">1 200 € HT</span>
+          <span class="text-sm text-slate-500">/ journée</span>
+        </div>
+        <p class="mt-1 text-sm text-slate-600">690 € HT / la demi-journée</p>
+        <p class="text-sm text-slate-500">en plus de la formule en autonomie — 3 à 4 journées la première année suffisent généralement</p>
+        <h3 class="mt-5 text-sm font-semibold text-slate-900">Les journées d'accompagnement</h3>
+        <ul class="mt-2 space-y-2 text-sm text-slate-700">
+          {journeesAccompagnement.map((item) => (
+            <li class="flex gap-2">
+              <svg aria-hidden="true" focusable="false" class="mt-0.5 h-4 w-4 flex-none text-terracotta-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Accompagnement mise en œuvre -->
+      <div class="flex flex-col scroll-mt-24 rounded-2xl border border-slate-200 bg-cream-50 p-6 shadow-sm sm:p-8">
+        <h2 class="mt-4 text-lg font-semibold text-slate-900">Accompagnement mise en œuvre</h2>
+        <p class="mt-2 text-sm text-slate-600">
+          Une mission sur mesure, quand la mise en œuvre opérationnelle demande un savoir-faire spécifique
+          que la pédagogie des outils ne couvre pas : bâtir un registre RGPD, cartographier vos systèmes
+          d'IA, structurer votre dispositif de conformité. Nous le faisons avec vos équipes, ou pour elles.
+        </p>
+        <div class="mt-5">
+          <span class="text-2xl font-bold text-slate-900">Sur devis</span>
+          <p class="text-sm text-slate-500">après analyse de vos besoins</p>
+        </div>
+        <ul class="mt-5 space-y-2 text-sm text-slate-700">
+          {optionMiseEnOeuvre.map((item) => (
+            <li class="flex gap-2">
+              <svg aria-hidden="true" focusable="false" class="mt-0.5 h-4 w-4 flex-none text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-6">
+          <Button href={devisMiseEnOeuvreHref} variant="ghost">Demander une analyse</Button>
+        </div>
+      </div>
+    </div>
+
+    <p class="mx-auto mt-8 max-w-2xl text-center text-xs text-slate-500">
+      Prix exprimés hors taxes (HT). Le forfait s'ajuste simplement à votre effectif : 1 990 € de base,
+      plus 19 € par salarié.
+    </p>
+  </Section>
+
+  <!-- La preuve d'audit -->
+  <Section tone="cream" eyebrow="Ce qui nous distingue" title="La preuve d'audit, pas seulement la formation">
+    <div class="mx-auto max-w-2xl text-center text-slate-600">
+      <p>
+        Le contenu pédagogique, tout le monde en propose. Ce qui compte le jour d'un contrôle, d'un appel
+        d'offres ou d'une question client, c'est de pouvoir <strong class="text-slate-900">démontrer</strong> que
+        vos équipes ont été formées : chaque formation validée génère un badge horodaté, consolidé dans un
+        registre que vous exportez vous-même. Qui, quand, sur quel thème — la réponse est déjà prête.
+      </p>
+    </div>
+  </Section>
+
+  <!-- Les thématiques incluses -->
+  <Section tone="white" eyebrow="Inclus dans le forfait" title="Les 9 thématiques, toutes incluses">
+    <div class="grid grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-5 lg:grid-cols-9">
+      {themes.map((theme) => (
+        <a href={`/formations/${theme.slug}/`} class="group flex flex-col items-center gap-2 text-center">
+          <span class="w-full max-w-[5.5rem]" aria-hidden="true"><ThemeBadge slug={theme.slug} /></span>
+          <span class="text-xs font-medium text-slate-500 group-hover:text-slate-900">{theme.nav}</span>
+        </a>
+      ))}
+    </div>
+    <div class="mt-8 text-center">
+      <Button href="/formations/" variant="ghost">Voir le catalogue détaillé</Button>
+    </div>
+  </Section>
+
+  <!-- Simulateur -->
+  <section class="bg-cream-200">
+    <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <div class="mx-auto max-w-2xl rounded-xl bg-cream-100 p-6 sm:p-8">
+        <h2 class="text-center text-xl font-bold text-slate-900 sm:text-2xl">Estimez votre budget</h2>
+
+        <div class="mx-auto mt-6 max-w-xl">
+          <div role="group" aria-labelledby="sim-personnes-label" class="text-sm font-medium text-slate-700">
+            <span class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+              <span id="sim-personnes-label">Nombre de salariés</span>
+              <span class="flex items-center gap-1">
+                <input
+                  id="sim-personnes-num"
+                  type="number"
+                  min="10"
+                  max="1000"
+                  step="1"
+                  value="100"
+                  inputmode="numeric"
+                  aria-label="Nombre de salariés (saisie précise, de 10 à 1000)"
+                  class="w-24 rounded-md border border-slate-300 px-2 py-1 text-right font-bold text-accent-600 focus:border-accent-600 focus:outline-none focus:ring-1 focus:ring-accent-600"
+                />
+                <span class="text-slate-500">salariés</span>
+              </span>
+            </span>
+            <input id="sim-personnes" type="range" min="10" max="1000" step="1" value="100" aria-label="Nombre de salariés (réglage par curseur, de 10 à 1000)" class="mt-2 w-full accent-accent-600" />
+            <span id="sim-personnes-hint" class="mt-1 block text-xs font-normal text-slate-400"></span>
+          </div>
+
+          <label class="mt-6 block text-sm font-medium text-slate-700">
+            <span class="flex flex-wrap justify-between gap-x-2"><span>Accompagnement sur site — demi-journées (option)</span><span id="sim-jours-val" class="font-bold text-terracotta-600">1 journée</span></span>
+            <input id="sim-jours" type="range" min="0" max="20" step="1" value="2" class="mt-2 w-full accent-terracotta-600" />
+          </label>
+
+          <div class="mt-8 space-y-4" aria-live="polite">
+            <div class="grid gap-4 text-center sm:grid-cols-2">
+              <div class="rounded-xl bg-white p-5">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Forfait plateforme</p>
+                <p id="sim-annee" class="mt-1 text-2xl font-bold text-accent-600">—</p>
+                <p class="text-xs text-slate-500">par an</p>
+              </div>
+              <div class="rounded-xl bg-white p-5">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Accompagnement</p>
+                <p id="sim-accompagnement" class="mt-1 text-2xl font-bold text-terracotta-600">—</p>
+                <p id="sim-accompagnement-note" class="text-xs text-slate-500">en option</p>
+              </div>
+            </div>
+            <div class="rounded-xl border-2 border-accent-600 bg-white p-5 text-center">
+              <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Budget total</p>
+              <p id="sim-total" class="mt-1 text-3xl font-bold text-slate-900">—</p>
+              <p id="sim-parsalarie" class="mt-2 text-sm font-semibold text-slate-700">—</p>
+              <p class="text-xs text-slate-500">par salarié et par an</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 text-center">
+          <Button href="/contact/" variant="primary" class="js-cta-proposition">Recevoir une proposition pour mon effectif</Button>
+          <p class="mx-auto mt-3 max-w-md text-xs leading-relaxed text-slate-500">
+            <strong class="font-semibold text-terracotta-600">−20 % la première année</strong>, réservé aux 5 premiers
+            clients signés, en échange d'un témoignage ou d'une étude de cas utilisable publiquement. Offre non
+            cumulable, valable jusqu'au 31/12/2026.
+          </p>
+        </div>
+      </div>
+
+      <div class="mx-auto mt-6 max-w-2xl rounded-xl border border-slate-200 bg-cream-50 p-6 sm:p-8">
+        <p class="text-sm font-semibold text-slate-900">Un accompagnement mise en œuvre en plus ?</p>
+        <p class="mt-2 text-sm text-slate-600">
+          Bâtir un registre RGPD, cartographier vos systèmes d'IA, structurer votre dispositif de
+          conformité : ce service sur mesure ne s'estime pas ici — il fait l'objet d'un devis après
+          analyse de vos besoins, indépendamment du forfait.
+        </p>
+        <div class="mt-4">
+          <Button href={devisMiseEnOeuvreHref} variant="ghost">Demander une analyse</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="bg-cream-50">
+    <div class="mx-auto max-w-2xl px-6 py-16 text-center sm:py-20">
+      <p class="text-sm text-slate-600">
+        Les tarifs publiés sont des repères. Le devis accepté fixe le périmètre et le prix ; les conditions
+        contractuelles vous sont remises à la souscription sur la plateforme.
+      </p>
+    </div>
+  </div>
+
+  <Section tone="navy" title="Prêt à équiper vos équipes ?">
+    <div class="flex flex-wrap justify-center gap-4">
+      <Button href="/contact/?type=forfait_plateforme" variant="primary">Recevoir une proposition</Button>
+      <Button href="/formations/" variant="ghost-dark">Voir le catalogue</Button>
+    </div>
+  </Section>
+
+  <script>
+  const FIXE = 1990;
+  const PAR_SALARIE = 19;
+  const PRIX_JOURNEE = 1200;
+  const PRIX_DEMI_JOURNEE = 690;
+
+  function formatEuros(n: number) {
+    return Math.round(n).toLocaleString("fr-FR") + " € HT";
+  }
+
+  function formatEurosPrecis(n: number) {
+    return n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " € HT";
+  }
+
+  // Convertit un nombre de demi-journées en libellé lisible : "2 journées + 1 demi-journée".
+  function formatDuree(demiJournees: number) {
+    const journeesEntieres = Math.floor(demiJournees / 2);
+    const reste = demiJournees % 2;
+    const parts: string[] = [];
+    if (journeesEntieres > 0) parts.push(`${journeesEntieres} journée${journeesEntieres > 1 ? "s" : ""}`);
+    if (reste > 0) parts.push("1 demi-journée");
+    return parts.join(" + ");
+  }
+
+  // Plancher / plafond du simulateur : au-delà du plafond, le tarif n'est plus une simple grille → devis.
+  const PLANCHER_FORFAIT = 10;
+  const PLAFOND_FORFAIT = 1000;
+
+  // true dès que l'utilisateur tente de saisir un effectif > PLAFOND_FORFAIT (remis à false s'il redescend).
+  let devisRequis = false;
+
+  function lireEffectif(raw: string) {
+    let n = Math.round(parseFloat(raw));
+    if (!Number.isFinite(n)) n = PLANCHER_FORFAIT;
+    return Math.min(PLAFOND_FORFAIT, Math.max(PLANCHER_FORFAIT, n));
+  }
+
+  // Empêche la saisie d'un nombre > PLAFOND_FORFAIT : ramène le champ à 1000 et arme le mode devis.
+  // Le mode devis ne se désarme qu'en repassant STRICTEMENT sous 1000 (à 1000 pile, on garde l'état
+  // courant : sinon le reformatage à 1000 effacerait le fait que l'utilisateur visait plus haut).
+  function borner(personnesNum: HTMLInputElement) {
+    const brut = Math.round(parseFloat(personnesNum.value));
+    if (!Number.isFinite(brut)) return;
+    if (brut > PLAFOND_FORFAIT) {
+      devisRequis = true;
+      personnesNum.value = String(PLAFOND_FORFAIT);
+    } else if (brut < PLAFOND_FORFAIT) {
+      devisRequis = false;
+    }
+  }
+
+  function simulate() {
+    const personnesRange = document.getElementById("sim-personnes") as HTMLInputElement | null;
+    const personnesNum = document.getElementById("sim-personnes-num") as HTMLInputElement | null;
+    const joursInput = document.getElementById("sim-jours") as HTMLInputElement | null;
+    if (!personnesRange || !personnesNum || !joursInput) return;
+
+    const personnes = lireEffectif(personnesNum.value);
+    personnesRange.value = String(personnes);
+
+    const hint = document.getElementById("sim-personnes-hint");
+    if (hint) {
+      if (devisRequis) {
+        hint.textContent =
+          "Au-delà de 1 000 salariés, le budget n'est plus une simple grille : demandez un devis personnalisé avec le bouton ci-dessous.";
+        hint.className = "mt-1 block text-xs font-semibold text-terracotta-700";
+      } else {
+        hint.textContent = "";
+        hint.className = "mt-1 block text-xs font-normal text-slate-400";
+      }
+    }
+
+    const demiJournees = Math.max(0, parseInt(joursInput.value, 10) || 0);
+    const journeesEntieres = Math.floor(demiJournees / 2);
+    const reste = demiJournees % 2;
+    const dureeLisible = formatDuree(demiJournees);
+
+    document.getElementById("sim-jours-val")!.textContent = demiJournees > 0 ? dureeLisible : "—";
+
+    const plateforme = FIXE + PAR_SALARIE * personnes;
+    const accompagnement = journeesEntieres * PRIX_JOURNEE + reste * PRIX_DEMI_JOURNEE;
+    const total = plateforme + accompagnement;
+
+    // Au-delà de 1000 salariés, le forfait plateforme relève du devis : on n'affiche pas de montant ferme.
+    document.getElementById("sim-annee")!.textContent = devisRequis ? "Sur devis" : formatEuros(plateforme);
+    document.getElementById("sim-accompagnement")!.textContent = demiJournees > 0 ? formatEuros(accompagnement) : "—";
+    document.getElementById("sim-accompagnement-note")!.textContent =
+      demiJournees > 0 ? `${dureeLisible} sur site` : "en option";
+    document.getElementById("sim-total")!.textContent = devisRequis ? "Sur devis" : formatEuros(total);
+    document.getElementById("sim-parsalarie")!.textContent = devisRequis ? "" : formatEurosPrecis(total / personnes);
+
+    const message = devisRequis
+      ? [
+          "Suite à la simulation réalisée sur la page Tarifs entreprises :",
+          "- Effectif : plus de 1 000 salariés",
+          `- Accompagnement sur site souhaité : ${demiJournees > 0 ? `${dureeLisible} (${formatEuros(accompagnement)})` : "à préciser"}`,
+          "",
+          "Au-delà de 1 000 salariés, merci de m'établir un devis personnalisé pour le forfait plateforme.",
+        ].join("\n")
+      : [
+          "Suite à la simulation réalisée sur la page Tarifs entreprises :",
+          `- Effectif : ${personnes} salarié${personnes > 1 ? "s" : ""}`,
+          `- Forfait plateforme : ${formatEuros(plateforme)} / an`,
+          `- Accompagnement sur site : ${demiJournees > 0 ? `${dureeLisible} (${formatEuros(accompagnement)})` : "aucun"}`,
+          `- Budget total : ${formatEuros(total)} (${formatEurosPrecis(total / personnes)} / salarié / an)`,
+          "",
+          "Merci de me faire parvenir une proposition adaptée à mon effectif.",
+        ].join("\n");
+
+    const ctaParams = new URLSearchParams({
+      type: "forfait_plateforme",
+      subject: devisRequis
+        ? "Demande de devis — Forfait plateforme (plus de 1 000 salariés)"
+        : "Demande de proposition — Forfait plateforme",
+      message,
+    });
+    document.querySelectorAll<HTMLAnchorElement>(".js-cta-proposition").forEach((link) => {
+      link.href = "/contact/?" + ctaParams.toString();
+      link.textContent = devisRequis
+        ? "Demander un devis pour mon effectif"
+        : "Recevoir une proposition pour mon effectif";
+    });
+  }
+
+  const personnesRangeEl = document.getElementById("sim-personnes") as HTMLInputElement | null;
+  const personnesNumEl = document.getElementById("sim-personnes-num") as HTMLInputElement | null;
+
+  // Curseur → champ (le curseur est plafonné à 1000, il ne peut pas armer le mode devis).
+  personnesRangeEl?.addEventListener("input", () => {
+    if (personnesNumEl) personnesNumEl.value = personnesRangeEl.value;
+    devisRequis = false;
+    simulate();
+  });
+
+  // Saisie précise : on borne à 1000 à chaque frappe (impossible d'aller au-delà) puis on recalcule.
+  personnesNumEl?.addEventListener("input", () => {
+    if (personnesNumEl) borner(personnesNumEl);
+    simulate();
+  });
+  personnesNumEl?.addEventListener("change", () => {
+    if (personnesNumEl) {
+      borner(personnesNumEl);
+      personnesNumEl.value = String(lireEffectif(personnesNumEl.value));
+    }
+    simulate();
+  });
+
+  document.getElementById("sim-jours")?.addEventListener("input", simulate);
+  simulate();
+  </script>
+</BaseLayout>

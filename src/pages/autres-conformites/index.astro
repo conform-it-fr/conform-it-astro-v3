@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import Card from "../../components/Card.astro";
+import Button from "../../components/Button.astro";
+
+const items = [
+  {
+    title: "NIS2",
+    description: "Cybersécurité et gouvernance numérique : évaluez votre niveau de préparation face aux exigences européennes NIS2.",
+    href: "/service-en-ligne/outil-qualif-nis2-pour-dirigeants/",
+    cta: "Faire le test NIS2",
+  },
+  {
+    title: "DORA",
+    description: "Résilience opérationnelle numérique pour le secteur financier : pré-qualification puis audit de conformité DORA.",
+    href: "/audit-dora/",
+    cta: "Découvrir l'audit DORA",
+  },
+  {
+    title: "Accessibilité numérique (RGAA)",
+    description: "Audit complet de conformité RGAA pour votre site internet, ou test automatique gratuit en 2 minutes.",
+    href: "/audit-rgaa/",
+    cta: "Découvrir l'audit RGAA",
+  },
+];
+---
+
+<BaseLayout
+  title="Autres conformités — NIS2, DORA, accessibilité"
+  description="conform-IT accompagne aussi vos autres obligations de conformité numérique : NIS2, DORA et accessibilité RGAA."
+>
+  <Section as="h1"
+    tone="white"
+    eyebrow="Au-delà de l'IA"
+    title="Autres conformités"
+    description="conform-IT accompagne également vos autres obligations de conformité numérique."
+  >
+    <p class="mx-auto mb-10 max-w-2xl text-center text-sm text-slate-600">
+      Pour <strong>former vos équipes</strong> à ces sujets (NIS2, cybersécurité, conformité web…), tout est
+      inclus dans le <a href="/formations/" class="font-semibold text-accent-600 hover:underline">catalogue du forfait plateforme</a>.
+      Les missions ci-dessous concernent l'audit et l'accompagnement, au-delà de la formation.
+    </p>
+    <div class="grid gap-6 md:grid-cols-3">
+      {items.map((item) => (
+        <Card title={item.title}>
+          <p>{item.description}</p>
+          <Button href={item.href} variant="secondary" class="mt-5 w-full">{item.cta}</Button>
+          {item.title === "Accessibilité numérique (RGAA)" && (
+            <a href="/service-en-ligne/formulaire-rgaa/" class="mt-3 block text-center text-sm font-semibold text-accent-600 hover:underline">
+              Faire le test gratuit en 2 minutes →
+            </a>
+          )}
+        </Card>
+      ))}
+    </div>
+  </Section>
+</BaseLayout>

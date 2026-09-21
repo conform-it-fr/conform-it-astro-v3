@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Section from "../../../components/Section.astro";
+---
+<BaseLayout
+  title="Test d'accessibilité RGAA gratuit"
+  description="Connaître le niveau d'accessibilité de votre site internet, basé sur le RGAA 4.1, le référentiel officiel utilisé en France."
+>
+  <Section as="h1" tone="white" eyebrow="Autres conformités" title="Votre site est-il accessible à tous ?" description="conform-IT vous aide à connaître le niveau d'accessibilité de votre site internet, en se basant sur le RGAA 4.1.">
+    <div class="mx-auto max-w-2xl">
+      <div class="rounded-2xl border border-slate-200 bg-cream-100 p-5 text-sm text-slate-700">
+        <strong>Important :</strong> il ne s'agit pas d'un audit d'accessibilité. Les résultats proviennent
+        uniquement d'une analyse automatique réalisée par un outil (106 indicateurs, 255 tests). Certains
+        points du RGAA nécessitent une analyse manuelle ; le niveau de conformité est donc présenté sous forme
+        d'intervalle.
+      </div>
+
+      <form action="https://audit.conform-it.fr/ajout.php" method="post" novalidate class="mt-8 space-y-5">
+        <div>
+          <label for="fullName" class="block text-sm font-medium text-slate-700">Vos nom et prénom <span aria-hidden="true" class="text-terracotta-600">*</span></label>
+          <input id="fullName" name="fullName" type="text" required autocomplete="name"
+            class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20" />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-slate-700">Votre adresse email (pour l'envoi des résultats) <span aria-hidden="true" class="text-terracotta-600">*</span></label>
+          <input id="email" name="email" type="email" required inputmode="email" autocomplete="email" placeholder="nom.prenom@domaine.fr"
+            class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20" />
+        </div>
+        <div>
+          <label for="siteUrl" class="block text-sm font-medium text-slate-700">URL complète du site à analyser <span aria-hidden="true" class="text-terracotta-600">*</span></label>
+          <input id="siteUrl" name="siteUrl" type="url" required inputmode="url" placeholder="https://www.exemple.fr"
+            class="mt-1.5 w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20" />
+        </div>
+
+        <label class="flex items-start gap-3 text-sm text-slate-600">
+          <input id="consent" name="consent" type="checkbox" required class="mt-1 h-4 w-4 rounded border-slate-300 text-accent-600 focus:ring-accent-500" />
+          <span>
+            J'accepte que mes informations soient utilisées uniquement pour traiter ma demande d'analyse RGAA.
+            <a class="font-medium text-terracotta-600 hover:underline" href="/politique-de-confidentialite/" target="_blank" rel="noopener">Politique de confidentialité<span class="sr-only"> (nouvel onglet)</span></a>.
+          </span>
+        </label>
+
+        <label class="flex items-start gap-3 text-sm text-slate-600">
+          <input id="fichier" name="fichier" type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-300 text-accent-600 focus:ring-accent-500" />
+          <span>Je souhaite pouvoir étudier les éléments techniques et améliorer l'accessibilité de mon site à l'aide de la visionneuse de résultats.</span>
+        </label>
+
+        <div class="flex items-center gap-4">
+          <button type="submit" class="rounded-full bg-accent-600 px-6 py-3 text-sm font-semibold text-cream-50 transition-colors hover:bg-accent-700">
+            Envoyer la demande
+          </button>
+        </div>
+        <p class="text-xs text-slate-400"><span aria-hidden="true">*</span> Champs obligatoires</p>
+      </form>
+    </div>
+  </Section>
+</BaseLayout>

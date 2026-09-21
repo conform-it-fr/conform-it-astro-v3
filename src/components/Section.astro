@@ -1,0 +1,40 @@
+---
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  tone?: "cream" | "white" | "navy";
+  class?: string;
+  as?: "h1" | "h2";
+  id?: string;
+}
+
+const { eyebrow, title, description, tone = "white", class: className = "", as: HeadingTag = "h2", id } = Astro.props;
+
+const tones = {
+  white: "bg-cream-50",
+  cream: "bg-cream-100",
+  navy: "starry bg-accent-900 text-cream-50",
+};
+---
+
+<section id={id} class:list={[tones[tone], className]}>
+  <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    {(eyebrow || title || description) && (
+      <div class="mx-auto mb-12 max-w-2xl text-center">
+        {eyebrow && (
+          <p class="text-sm font-semibold uppercase tracking-wide text-terracotta-600">{eyebrow}</p>
+        )}
+        {title && (
+          <HeadingTag class:list={["mt-2 text-3xl font-bold sm:text-4xl", tone === "navy" ? "text-cream-50" : "text-slate-900"]}>
+            {Astro.slots.has("title") ? <slot name="title" /> : title}
+          </HeadingTag>
+        )}
+        {description && (
+          <p class:list={["mt-4 text-base", tone === "navy" ? "text-slate-300" : "text-slate-600"]}>{description}</p>
+        )}
+      </div>
+    )}
+    <slot />
+  </div>
+</section>

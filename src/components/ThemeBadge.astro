@@ -1,0 +1,47 @@
+---
+// Badge visuel par thématique du catalogue.
+// SVG servis depuis public/badges/<slug>.svg (viewBox 680x720) — copiés des sources
+// src/assets/badges/badge-<slug>.svg. Rendu via <img> : responsive (width:100% / height:auto
+// pilotés par le conteneur parent), mis en cache par le navigateur, réutilisable sans alourdir le HTML.
+
+const SLUGS = [
+  "intelligence-artificielle",
+  "rgpd",
+  "cybersecurite",
+  "nis2",
+  "non-discrimination",
+  "harcelement",
+  "anti-corruption",
+  "sobriete-numerique",
+  "conformite-web",
+  "dora",
+];
+
+interface Props {
+  slug: string;
+  class?: string;
+  /** Texte alternatif. Vide par défaut (badge décoratif, le titre voisin nomme déjà le thème). */
+  alt?: string;
+  /** Légère mise en évidence (halo terracotta). Pensé pour un fond sombre (hero d'accueil). */
+  highlighted?: boolean;
+}
+
+const { slug, class: className = "", alt = "", highlighted = false } = Astro.props;
+const hasBadge = SLUGS.includes(slug);
+---
+
+{hasBadge && (
+  <img
+    src={`/badges/${slug}.svg`}
+    alt={alt}
+    width="680"
+    height="720"
+    loading="lazy"
+    decoding="async"
+    class:list={[
+      "block h-auto w-full",
+      highlighted && "[filter:drop-shadow(0_0_12px_rgba(224,122,95,0.55))]",
+      className,
+    ]}
+  />
+)}

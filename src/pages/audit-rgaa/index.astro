@@ -1,0 +1,88 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import Button from "../../components/Button.astro";
+
+const faq = [
+  {
+    q: "Qu'est-ce qu'un audit RGAA ?",
+    a: "Un audit RGAA est une évaluation méthodique d'un site web visant à mesurer sa conformité au Référentiel Général d'Amélioration de l'Accessibilité. Il identifie les écarts réglementaires et propose des actions correctives.",
+  },
+  {
+    q: "L'audit RGAA est-il obligatoire ?",
+    a: "Oui, pour les organismes publics et certaines structures privées soumises aux obligations d'accessibilité numérique. Il est indispensable pour publier une déclaration d'accessibilité conforme.",
+  },
+  {
+    q: "Combien de temps dure un audit RGAA ?",
+    a: "En moyenne, entre 2 et 5 semaines selon la taille et la complexité du site.",
+  },
+  {
+    q: "Quelle différence entre test automatique et audit RGAA ?",
+    a: "Les tests automatiques détectent seulement une partie des erreurs. Un audit RGAA inclut des vérifications manuelles approfondies et l'utilisation de technologies d'assistance.",
+  },
+];
+---
+
+<BaseLayout
+  title="Audit RGAA : analyse complète de conformité"
+  description="L'audit RGAA mesure précisément le niveau d'accessibilité de votre site internet et identifie les écarts par rapport aux obligations réglementaires françaises."
+>
+  <Section as="h1" tone="white" eyebrow="Autres conformités" title="Audit RGAA : analyse complète de conformité" description="Un audit complet, structuré et exploitable, fondé sur le Référentiel Général d'Amélioration de l'Accessibilité (RGAA), pour une vision claire de votre taux de conformité et une feuille de route opérationnelle.">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-terracotta-600">Pourquoi réaliser un audit RGAA ?</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-slate-600">
+        <li>Mesurer objectivement votre niveau de conformité</li>
+        <li>Identifier précisément les non-conformités critiques</li>
+        <li>Prioriser les actions correctives</li>
+        <li>Réduire les risques juridiques et réputationnels</li>
+        <li>Améliorer l'expérience utilisateur pour tous</li>
+      </ul>
+
+      <h2 class="mt-8 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Méthodologie d'audit (RGAA 4.1 / 4.2)</h2>
+      <div class="mt-3 space-y-4">
+        <div>
+          <h3 class="font-semibold text-slate-900">1. Sélection d'un échantillon représentatif</h3>
+          <p class="mt-1 text-sm text-slate-600">Page d'accueil, pages de contenu, formulaires, pages transactionnelles, modèles spécifiques — selon la méthodologie officielle.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900">2. Analyse critère par critère</h3>
+          <p class="mt-1 text-sm text-slate-600">Chaque critère applicable est testé manuellement, vérifié avec technologies d'assistance et documenté avec preuves et captures : alternatives textuelles, structure des titres, navigation clavier, contrastes, formulaires, compatibilité lecteurs d'écran.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900">3. Calcul du taux de conformité</h3>
+          <p class="mt-1 text-sm text-slate-600">Taux global, détail par thématique, niveau de criticité des non-conformités — une vision exploitable, pas un simple pourcentage.</p>
+        </div>
+      </div>
+
+      <h2 class="mt-8 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Livrables fournis</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-slate-600">
+        <li>Rapport d'audit complet (détail critère par critère, statut, justifications, illustrations)</li>
+        <li>Plan d'actions priorisé (classement par impact, complexité, recommandations concrètes)</li>
+        <li>Synthèse exécutive, pour direction générale, DSI, équipes produit, responsables conformité</li>
+      </ul>
+
+      <h2 class="mt-8 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Délais moyens</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-slate-600">
+        <li>Site vitrine : 2 à 3 semaines</li>
+        <li>Site institutionnel : 3 à 5 semaines</li>
+        <li>Plateforme complexe : sur devis</li>
+      </ul>
+      <p class="mt-4 text-sm font-medium text-accent-600">Tarif communiqué après échange sur votre périmètre.</p>
+
+      <h2 class="mt-10 text-sm font-semibold uppercase tracking-wide text-terracotta-600">FAQ</h2>
+      <div class="mt-3 space-y-4">
+        {faq.map((item) => (
+          <div>
+            <h3 class="font-semibold text-slate-900">{item.q}</h3>
+            <p class="mt-1 text-sm text-slate-600">{item.a}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 flex flex-wrap gap-4">
+        <Button href="/contact/?type=audit_RGAA" variant="secondary">Demander un échange</Button>
+        <Button href="/service-en-ligne/formulaire-rgaa/" variant="ghost">Faire le test gratuit</Button>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

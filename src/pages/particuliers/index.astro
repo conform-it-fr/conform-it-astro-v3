@@ -1,0 +1,90 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import Card from "../../components/Card.astro";
+import Button from "../../components/Button.astro";
+
+const unites = [
+  {
+    titre: "Formation",
+    prix: "80 €",
+    texte: "Un module complet sur un sujet : IA et AI Act, RGPD, cybersécurité, harcèlement, anti-corruption… Accès à vie, badge de réussite à la clé.",
+    type: "achat_formation",
+    sujet: "Achat — une formation",
+  },
+  {
+    titre: "Fiche pratique",
+    prix: "30 €",
+    texte: "Une synthèse opérationnelle à garder sous la main : l'essentiel d'un sujet en quelques pages, prêt à appliquer.",
+    type: "achat_fiche",
+    sujet: "Achat — une fiche pratique",
+  },
+  {
+    titre: "Quiz",
+    prix: "10 €",
+    texte: "Testez et validez vos connaissances sur un thème. Correction commentée, attestation de réussite.",
+    type: "achat_quiz",
+    sujet: "Achat — un quiz",
+  },
+];
+---
+
+<BaseLayout
+  title="Particuliers — se former à la conformité"
+  description="Formations, fiches pratiques et quiz de conformité à l'unité (dès 10 €), ou l'abonnement annuel à 199 € pour un accès illimité aux formations conform-IT."
+>
+  <Section as="h1"
+    tone="white"
+    eyebrow="Pour les particuliers"
+    title="Se former à la conformité, à l'unité ou en illimité"
+    description="Les mêmes formations que les entreprises, accessibles individuellement. Vous choisissez un sujet précis, ou vous prenez l'abonnement et vous piochez toute l'année."
+  >
+    <div class="grid gap-6 md:grid-cols-3">
+      {unites.map((u) => (
+        <Card title={u.titre}>
+          <p class="text-2xl font-bold text-accent-600">{u.prix}</p>
+          <p class="mt-3">{u.texte}</p>
+          <Button
+            href={`/contact/?type=${u.type}&subject=${encodeURIComponent(u.sujet)}`}
+            variant="secondary"
+            class="mt-5"
+          >
+            Je suis intéressé(e)
+          </Button>
+        </Card>
+      ))}
+    </div>
+
+    <div class="mx-auto mt-6 max-w-3xl rounded-2xl border border-slate-200 bg-cream-50 p-6 text-sm text-slate-600">
+      <h2 class="text-base font-semibold text-slate-900">Pack sur mesure</h2>
+      <p class="mt-2">
+        Une formation, plus les fiches et quiz qui vont avec : vous payez le prix de la formation,{" "}
+        <strong class="text-slate-900">puis la moitié du prix</strong> des fiches et quiz ajoutés. Indiquez
+        ce qui vous intéresse, on vous envoie le total.
+      </p>
+      <Button href="/contact/?type=achat_pack&subject=Achat%20%E2%80%94%20un%20pack%20sur%20mesure" variant="ghost" class="mt-4">Composer un pack</Button>
+    </div>
+  </Section>
+
+  <!-- Abonnement -->
+  <Section tone="cream" eyebrow="La formule illimitée" title="Abonnement annuel">
+    <div class="mx-auto max-w-2xl rounded-2xl border-2 border-terracotta-500 bg-cream-50 p-6 text-center shadow-sm sm:p-8">
+      <p class="text-3xl font-bold text-terracotta-600">199 € <span class="text-base font-medium text-slate-500">/ an</span></p>
+      <p class="mt-3 text-sm text-slate-600">
+        Accès illimité à tout le catalogue pendant un an : toutes les formations, toutes les fiches, tous les
+        quiz, et les nouveautés ajoutées en cours d'année. Badges et attestations inclus.
+      </p>
+      <Button href="/contact/?type=abonnement_particulier&subject=Abonnement%20annuel%20particulier" variant="primary" class="mt-6">Souscrire l'abonnement</Button>
+    </div>
+    <p class="mx-auto mt-6 max-w-2xl text-center text-xs text-slate-500">
+      Prix TTC. Le paiement se fait après un premier échange — pas de règlement en ligne à cette étape :
+      indiquez ce qui vous intéresse via le formulaire, on revient vers vous.
+    </p>
+  </Section>
+
+  <div class="border-y border-slate-100 bg-cream-50">
+    <div class="mx-auto max-w-6xl px-6 py-8 text-center text-sm">
+      <a href="/offre/" class="font-medium text-slate-500 hover:text-accent-600">Vous formez une équipe ? Voir l'offre entreprise →</a>
+    </div>
+  </div>
+</BaseLayout>

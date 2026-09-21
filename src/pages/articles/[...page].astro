@@ -1,0 +1,38 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import ArticleCategoryNav from "../../components/ArticleCategoryNav.astro";
+import Pagination from "../../components/Pagination.astro";
+import { getVisiblePosts, ARTICLES_PER_PAGE, type Post } from "../../lib/blog";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getVisiblePosts();
+  return paginate(posts, { pageSize: ARTICLES_PER_PAGE });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props as { page: Page<Post> };
+
+// Pour la barre de thèmes (compteurs sur l'ensemble, pas seulement la page courante).
+const allPosts = await getVisiblePosts();
+
+const isFirst = page.currentPage === 1;
+const pageTitle = isFirst ? "Articles" : `Articles — page ${page.currentPage}`;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description="Nos analyses sur la conformité numérique, l'accessibilité et l'intelligence artificielle : RGAA, IA Act, RGPD, cybersécurité et plus."
+  noindex={!isFirst}
+>
+  <Section as="h1" eyebrow="Notre blog" title="Articles" description="Nos analyses sur la conformité numérique, l'accessibilité et l'intelligence artificielle.">
+    <ArticleCategoryNav posts={allPosts} active="" />
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {page.data.map((post) => <ArticleCard post={post} />)}
+    </div>
+
+    <Pagination page={page} />
+  </Section>
+</BaseLayout>

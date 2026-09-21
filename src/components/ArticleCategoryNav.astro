@@ -1,0 +1,34 @@
+---
+import { slugify } from "../lib/slugify";
+import { categoriesWithCount, type Post } from "../lib/blog";
+
+interface Props {
+  /** Tous les articles visibles, pour calculer les compteurs. */
+  posts: Post[];
+  /** Slug de la catégorie active, ou "" pour « Tous ». */
+  active?: string;
+}
+
+const { posts, active = "" } = Astro.props;
+const cats = categoriesWithCount(posts);
+
+const activeClass = "rounded-full bg-slate-900 px-4 py-1.5 font-semibold text-cream-50";
+const linkClass =
+  "rounded-full border border-slate-200 bg-cream-50 px-4 py-1.5 font-semibold text-slate-600 transition-colors hover:border-terracotta-400 hover:text-terracotta-600";
+---
+
+<nav class="mb-8 flex flex-wrap justify-center gap-2 text-sm" aria-label="Filtrer les articles par thème">
+  {active === "" ? (
+    <span class={activeClass} aria-current="page">Tous ({posts.length})</span>
+  ) : (
+    <a href="/articles/" class={linkClass}>Tous ({posts.length})</a>
+  )}
+  {cats.map((c) => {
+    const s = slugify(c.name);
+    return s === active ? (
+      <span class={activeClass} aria-current="page">{c.name} ({c.count})</span>
+    ) : (
+      <a href={`/articles/categorie/${s}/`} class={linkClass}>{c.name} ({c.count})</a>
+    );
+  })}
+</nav>

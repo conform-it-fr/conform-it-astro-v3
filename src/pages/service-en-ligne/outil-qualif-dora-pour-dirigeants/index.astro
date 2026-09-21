@@ -1,0 +1,109 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Section from "../../../components/Section.astro";
+import QuizForm from "../../../components/QuizForm.astro";
+import QuizGroup from "../../../components/QuizGroup.astro";
+import QuizQuestion from "../../../components/QuizQuestion.astro";
+---
+
+<BaseLayout
+  title="Pré-qualification DORA"
+  description="Évaluez si votre organisation est concernée par le règlement DORA et votre niveau d'exposition."
+>
+  <Section as="h1"
+    tone="white"
+    eyebrow="Pré-qualification gratuite · 12 questions · 5 minutes"
+    title="Outil de pré-qualification DORA"
+    description="Répondez à 12 questions et découvrez si votre organisation est concernée par le règlement DORA et quel est votre niveau d'exposition."
+  >
+    <QuizForm
+      formId="doraForm"
+      endpoint="https://audit.conform-it.fr/dora/prequal_dora.php"
+      submitLabel="Obtenir mon résultat DORA →"
+      theme="dora"
+      contexte="Le règlement (UE) 2022/2554 (DORA) impose aux entités financières et à leurs prestataires informatiques critiques un cadre unifié de résilience opérationnelle numérique : gouvernance des risques TIC, gestion et notification des incidents, tests de résilience, maîtrise des prestataires tiers. Il est applicable depuis janvier 2025. Cette pré-qualification ne remplace pas une analyse d'éligibilité détaillée."
+    >
+      <QuizGroup title="Éligibilité DORA" range="Q1 – Q4">
+        <QuizQuestion name="secteur" legend="Q1. Quelle est la nature de votre organisation ?" options={[
+          { value: "3", label: "Banque / établissement de crédit" },
+          { value: "3", label: "Assurance / mutuelle" },
+          { value: "3", label: "Société d'investissement / gestion d'actifs" },
+          { value: "3", label: "Fintech / établissement de paiement" },
+          { value: "2", label: "Prestataire IT pour secteur financier" },
+          { value: "0", label: "Autre" },
+        ]} />
+
+        <QuizQuestion name="regule" legend="Q2. Êtes-vous régulé par une autorité financière ?" options={[
+          { value: "3", label: "Oui" },
+          { value: "1", label: "Je ne sais pas" },
+          { value: "0", label: "Non" },
+        ]} />
+
+        <QuizQuestion name="dependance" legend="Q3. Votre activité dépend-elle fortement de systèmes informatiques critiques ?" options={[
+          { value: "3", label: "Oui, totalement" },
+          { value: "2", label: "Partiellement" },
+          { value: "0", label: "Faiblement" },
+        ]} />
+
+        <QuizQuestion name="impact" legend="Q4. Une interruption de vos systèmes IT aurait-elle un impact majeur sur votre activité ?" options={[
+          { value: "3", label: "Oui" },
+          { value: "1", label: "Modéré" },
+          { value: "0", label: "Faible" },
+        ]} />
+      </QuizGroup>
+
+      <QuizGroup title="Dépendance aux prestataires IT" range="Q5 – Q6">
+        <QuizQuestion name="cloud" legend="Q5. Utilisez-vous des services cloud ou SaaS critiques (AWS, Azure, logiciels métiers...) ?" options={[
+          { value: "3", label: "Oui" },
+          { value: "1", label: "Partiellement" },
+          { value: "0", label: "Non" },
+        ]} />
+
+        <QuizQuestion name="tiers" legend="Q6. Avez-vous identifié vos prestataires IT critiques ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "2", label: "Partiellement" },
+          { value: "3", label: "Non" },
+        ]} />
+      </QuizGroup>
+
+      <QuizGroup title="Gouvernance & maîtrise des risques" range="Q7 – Q8">
+        <QuizQuestion name="rssi" legend="Q7. Un responsable cybersécurité (RSSI ou équivalent) est-il désigné ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "2", label: "Non" },
+        ]} />
+
+        <QuizQuestion name="risque" legend="Q8. Avez-vous une gestion des risques IT formalisée et documentée ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "1", label: "Partiellement" },
+          { value: "3", label: "Non" },
+        ]} />
+      </QuizGroup>
+
+      <QuizGroup title="Capacité opérationnelle" range="Q9 – Q12">
+        <QuizQuestion name="incident" legend="Q9. Disposez-vous d'un processus formalisé de gestion des incidents IT/cyber ?" options={[
+          { value: "0", label: "Oui, testé" },
+          { value: "1", label: "Oui, non testé" },
+          { value: "3", label: "Non" },
+        ]} />
+
+        <QuizQuestion name="notif" legend="Q10. Êtes-vous en capacité de détecter et signaler rapidement un incident majeur ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "2", label: "Partiellement" },
+          { value: "3", label: "Non" },
+        ]} />
+
+        <QuizQuestion name="tests" legend="Q11. Vos systèmes critiques font-ils l'objet de tests réguliers (continuité, sécurité) ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "1", label: "Partiellement" },
+          { value: "3", label: "Non" },
+        ]} />
+
+        <QuizQuestion name="pca" legend="Q12. Disposez-vous d'un plan de continuité et de reprise IT testé ?" options={[
+          { value: "0", label: "Oui" },
+          { value: "1", label: "Non testé" },
+          { value: "3", label: "Non" },
+        ]} />
+      </QuizGroup>
+    </QuizForm>
+  </Section>
+</BaseLayout>

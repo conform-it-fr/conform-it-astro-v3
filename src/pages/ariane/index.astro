@@ -1,0 +1,221 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import Card from "../../components/Card.astro";
+import Button from "../../components/Button.astro";
+
+const DEMO_HREF = "/contact/?type=demande_demo&subject=Demande%20de%20d%C3%A9mo";
+const TENANT_HREF = "https://prod.conform-it.fr/tenants/www";
+
+const piliers = [
+  {
+    titre: "Former",
+    texte: "Des parcours courts, adaptés à chaque rôle, sur 9 thématiques (RGPD, IA, cybersécurité, NIS2…).",
+  },
+  {
+    titre: "Piloter",
+    texte: "Pré-diagnostics, tests de maturité et tableau de suivi pour situer chaque sujet.",
+  },
+  {
+    titre: "Prouver",
+    texte: "Badge horodaté à chaque validation, consolidé dans un registre exportable.",
+  },
+];
+
+// Aperçu produit : à remplacer par de vraies captures d'écran de l'interface Ariane FP²
+// (dashboard, badge, registre) dès qu'elles sont disponibles.
+const etapes = [
+  {
+    titre: "Le dashboard",
+    texte: "Une vue d'ensemble : parcours en cours, progression par thématique, prochaines actions.",
+  },
+  {
+    titre: "Le badge",
+    texte: "Délivré automatiquement à chaque formation validée, horodaté et vérifiable.",
+  },
+  {
+    titre: "Le registre",
+    texte: "Tous les badges consolidés, exportables en un clic pour le jour du contrôle.",
+  },
+];
+
+const faq = [
+  {
+    q: "Ariane FP² et conform-IT, quelle différence ?",
+    a: "conform-IT est l'organisme de formation ; Ariane FP² est la plateforme qui héberge les parcours, le pilotage et la preuve.",
+  },
+  {
+    q: "Puis-je passer d'un accès particulier à un accès entreprise ?",
+    a: "Oui, contactez-nous : nous étudions la bascule au cas par cas et reprenons votre progression existante.",
+  },
+  {
+    q: "Mes données sont-elles hébergées en France et sécurisées ?",
+    a: "Oui : vos données sont hébergées en France et traitées conformément au RGPD.",
+  },
+];
+---
+
+<BaseLayout
+  title="Ariane FP², la plateforme de conform-IT"
+  description="Ariane FP² est la plateforme conform-IT pour se former, piloter sa progression et garder la preuve de ses acquis — en entreprise ou en solo."
+>
+  <!-- Hero -->
+  <section class="starry bg-accent-900 text-cream-50">
+    <div class="mx-auto max-w-6xl px-6 py-8 sm:py-10">
+      <div class="grid gap-x-10 gap-y-8 lg:grid-cols-[minmax(0,1fr)_30rem] lg:items-center">
+        <div class="max-w-2xl">
+          <p class="text-sm font-semibold uppercase tracking-wide text-terracotta-400">La plateforme conform-IT</p>
+          <h1 class="mt-3 text-4xl font-bold leading-tight sm:text-5xl">
+            Ariane FP², la plateforme de conform-IT
+          </h1>
+          <p class="mt-6 max-w-xl text-lg text-slate-200">
+            Former. Piloter. Prouver. Une seule plateforme, deux usages : la conformité pour votre entreprise, ou pour vous seul.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <Button href="#entreprises" variant="primary">Je suis une entreprise →</Button>
+            <Button href="#particuliers" variant="ghost-dark">Je suis un particulier →</Button>
+          </div>
+        </div>
+
+        <!-- Fusée avec légende. RGAA 13.8 : l'image est FIXE par défaut (sans JS, ou si l'utilisateur
+             demande moins d'animations) ; le script en bas de page charge la version animée
+             (planche de 48 images en boucle de 3 s) et affiche un bouton pause/reprise.
+             La légende est portée par l'image : son contenu est repris dans l'alt. -->
+        <div class="relative mx-auto w-full max-w-xl lg:max-w-none">
+          <img
+            id="fusee-img"
+            src="/conform-it-fusee-3d-fixe-legende.svg"
+            data-fixe="/conform-it-fusee-3d-fixe-legende.svg"
+            data-anime="/conform-it-fusee-3d-animee-legende.svg"
+            alt="Fusée Ariane FP² en coupe. Booster principal : formation e-learning. Premier étage : outils de mise en conformité. Deuxième étage, charge utile : reporting et preuves. Boosters : accompagnement."
+            width="877"
+            height="900"
+            decoding="async"
+            class="h-auto w-full"
+          />
+          <button
+            id="fusee-toggle"
+            type="button"
+            hidden
+            class="absolute bottom-1 left-1 rounded-full bg-slate-900/80 px-3 py-1.5 text-xs font-semibold text-cream-50 ring-1 ring-inset ring-slate-500 transition-colors hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta-400"
+          >
+            Mettre l'animation en pause
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ce qu'est Ariane FP² -->
+  <Section
+    tone="white"
+    eyebrow="La plateforme"
+    title="Ce qu'est Ariane FP²"
+    description="Ariane FP² est le nom de la plateforme construite par conform-IT pour rendre la conformité concrète : se former, suivre sa progression, et repartir avec la preuve de ses acquis."
+  >
+    <div class="grid gap-8 sm:grid-cols-3">
+      {piliers.map((p) => (
+        <div>
+          <h3 class="text-base font-semibold text-slate-900">{p.titre}</h3>
+          <p class="mt-2 text-sm text-slate-600">{p.texte}</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <!-- Deux publics, deux parcours : pas de lien croisé ni de comparaison entre les deux blocs,
+       chacun s'adresse uniquement à son public. -->
+  <Section tone="cream" eyebrow="Comment y accéder" title="Deux publics, deux parcours">
+    <div class="grid gap-6 md:grid-cols-2">
+      <div id="entreprises" class="scroll-mt-24">
+        <Card title="Vous formez une équipe ?">
+          <p>Ariane FP² donne à votre entreprise un espace dédié pour former tous vos collaborateurs, suivre leur progression et garder la preuve de leur conformité.</p>
+          <Button href={DEMO_HREF} variant="secondary" class="mt-5">Demander une démo →</Button>
+        </Card>
+      </div>
+      <div id="particuliers" class="scroll-mt-24">
+        <Card title="Vous vous formez seul ?">
+          <p>Ariane FP² propose aussi un accès individuel pour se former à son rythme, sans passer par un employeur.</p>
+          <Button href={TENANT_HREF} variant="secondary" class="mt-5">Créer mon compte →</Button>
+        </Card>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Aperçu produit -->
+  <Section
+    tone="white"
+    eyebrow="Aperçu produit"
+    title="De la formation à la preuve, en trois temps"
+    description="Le même parcours que celui décrit sur la home, illustré cette fois par l'interface Ariane FP²."
+  >
+    <ol class="grid gap-4 md:grid-cols-3">
+      {etapes.map((item, i) => (
+        <li class="flex h-full flex-col rounded-2xl border border-slate-200 bg-cream-50 p-6 shadow-sm">
+          <span class="text-sm font-bold text-terracotta-600">0{i + 1}</span>
+          <h3 class="mt-2 text-base font-semibold text-slate-900">{item.titre}</h3>
+          <p class="mt-2 text-sm text-slate-600">{item.texte}</p>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <!-- Mini-FAQ -->
+  <Section tone="cream" eyebrow="Questions fréquentes" title="Ariane FP² en pratique">
+    <div class="mx-auto max-w-2xl space-y-6">
+      {faq.map((item) => (
+        <div>
+          <h3 class="font-semibold text-slate-900">{item.q}</h3>
+          <p class="mt-1 text-sm text-slate-600">
+            {item.a}
+            {item.q.startsWith("Mes données") && (
+              <>
+                {" "}
+                <a href="/politique-de-confidentialite/" class="font-semibold text-accent-600 hover:underline">Voir notre politique de confidentialité</a>.
+              </>
+            )}
+          </p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <!-- CTA final -->
+  <Section tone="navy" title="Prêt à commencer avec Ariane FP² ?">
+    <div class="flex flex-wrap justify-center gap-4">
+      <Button href={DEMO_HREF} variant="primary">Demander une démo →</Button>
+      <Button href={TENANT_HREF} variant="ghost-dark">Créer mon compte →</Button>
+    </div>
+  </Section>
+
+  <script is:inline>
+  // Fusée du hero (RGAA 13.8) : image fixe par défaut ; animation lancée seulement si
+  // l'utilisateur n'a pas demandé de mouvement réduit, et toujours contrôlable au bouton.
+  (function () {
+    var img = document.getElementById("fusee-img");
+    var btn = document.getElementById("fusee-toggle");
+    if (!img || !btn) return;
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var animated = false;
+    var preloaded = false;
+
+    function render() {
+      btn.textContent = animated ? "Mettre l'animation en pause" : "Lancer l'animation";
+    }
+    function play() {
+      if (preloaded) { img.src = img.dataset.anime; animated = true; render(); return; }
+      // Préchargement : on n'échange les images qu'une fois l'animation prête (pas de clignotement).
+      var pre = new Image();
+      pre.onload = function () { preloaded = true; img.src = img.dataset.anime; animated = true; render(); };
+      pre.src = img.dataset.anime;
+    }
+    function pause() { img.src = img.dataset.fixe; animated = false; render(); }
+
+    btn.hidden = false;
+    btn.addEventListener("click", function () { animated ? pause() : play(); });
+    reduce.addEventListener("change", function () { if (reduce.matches && animated) pause(); });
+    render();
+    if (!reduce.matches) play();
+  })();
+  </script>
+</BaseLayout>

@@ -1,0 +1,12 @@
+node_modules
+dist
+prod
+.astro
+.git
+.gitignore
+.DS_Store
+.deleted-articles
+*.log
+npm-debug.log*
+.idea
+.vscode

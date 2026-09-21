@@ -1,0 +1,46 @@
+---
+import type { GetStaticPaths, Page } from "astro";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import Section from "../../../../components/Section.astro";
+import ArticleCard from "../../../../components/ArticleCard.astro";
+import ArticleCategoryNav from "../../../../components/ArticleCategoryNav.astro";
+import Pagination from "../../../../components/Pagination.astro";
+import { getVisiblePosts, categoriesWithCount, ARTICLES_PER_PAGE, type Post } from "../../../../lib/blog";
+import { slugify } from "../../../../lib/slugify";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getVisiblePosts();
+  const cats = categoriesWithCount(posts);
+  return cats.flatMap((c) =>
+    paginate(
+      posts.filter((p) => p.data.category === c.name),
+      { params: { category: slugify(c.name) }, pageSize: ARTICLES_PER_PAGE, props: { categoryName: c.name } }
+    )
+  );
+}) satisfies GetStaticPaths;
+
+const { category } = Astro.params;
+const { page, categoryName } = Astro.props as { page: Page<Post>; categoryName: string };
+
+const allPosts = await getVisiblePosts();
+const isFirst = page.currentPage === 1;
+const pageTitle = isFirst
+  ? `Articles ${categoryName}`
+  : `Articles ${categoryName} — page ${page.currentPage}`;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={`Nos articles sur le thème « ${categoryName} » — conform-IT.`}
+  noindex={!isFirst}
+>
+  <Section as="h1" eyebrow="Notre blog" title={`Articles — ${categoryName}`} description={`Tous nos articles classés « ${categoryName} ».`}>
+    <ArticleCategoryNav posts={allPosts} active={category} />
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {page.data.map((post) => <ArticleCard post={post} />)}
+    </div>
+
+    <Pagination page={page} />
+  </Section>
+</BaseLayout>

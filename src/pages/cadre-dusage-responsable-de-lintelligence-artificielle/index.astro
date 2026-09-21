@@ -1,0 +1,83 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import Button from "../../components/Button.astro";
+---
+
+<BaseLayout
+  title="Cadre d'usage & charte IA — article 4 de l'AI Act"
+  description="Le volet gouvernance du thème IA : cadre d'usage responsable et charte d'utilisation de l'IA, pour répondre à l'obligation de littératie de l'article 4 de l'AI Act."
+>
+  <Section as="h1" tone="white" eyebrow="Approfondir le thème IA" title="Cadre d'usage & charte d'utilisation de l'IA" description="Au-delà des formations du catalogue, une mission pour encadrer concrètement l'utilisation des outils d'IA dans votre organisation : règles écrites, charte, sensibilisation.">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-terracotta-600">Pourquoi cette offre ?</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-slate-600">
+        <li>Les équipes utilisent déjà des outils d'IA (assistants rédactionnels, outils intégrés, automatisations).</li>
+        <li>Les pratiques sont hétérogènes et rarement encadrées.</li>
+        <li>Des informations internes peuvent être partagées involontairement.</li>
+        <li>Les contenus générés doivent être vérifiés et tracés.</li>
+      </ul>
+
+      <h2 class="mt-8 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Déroulé de la mission</h2>
+      <div class="mt-3 space-y-4">
+        <div>
+          <h3 class="font-semibold text-slate-900">1. Analyse rapide des usages (AptIA)</h3>
+          <ul class="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-600">
+            <li>recensement des outils d'IA utilisés (officiels et non officiels)</li>
+            <li>analyse des usages métiers (rédaction, synthèse, analyse, automatisation, etc.)</li>
+            <li>identification des pratiques sensibles (informations internes, documents, données à risque)</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900">2. Définition des règles d'utilisation</h3>
+          <ul class="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-600">
+            <li>outils autorisés / tolérés sous conditions / interdits</li>
+            <li>règles sur les informations utilisables (public, interne, sensible)</li>
+            <li>règles de vérification des contenus générés et exigences de relecture</li>
+            <li>responsabilités : qui valide, qui publie, qui arbitre</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900">3. Rédaction de la charte d'usage</h3>
+          <ul class="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-600">
+            <li>charte interne claire et applicable à l'ensemble de l'organisation</li>
+            <li>cas d'usage recommandés et situations à éviter</li>
+            <li>bonnes pratiques et points de vigilance</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900">4. Sensibilisation des équipes</h3>
+          <ul class="mt-1 list-disc space-y-1 pl-5 text-sm text-slate-600">
+            <li>atelier de présentation des règles</li>
+            <li>explication des risques et des bonnes pratiques</li>
+            <li>mise à disposition de supports et FAQ</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 class="mt-8 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Livrables</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-slate-600">
+        <li>Charte d'usage de l'intelligence artificielle (version interne)</li>
+        <li>Règles opérationnelles (outils, informations, validation, vérification)</li>
+        <li>Cartographie des usages de l'intelligence artificielle dans l'organisation</li>
+        <li>Supports de sensibilisation (slides / fiche mémo / FAQ)</li>
+      </ul>
+
+      <h2 class="mt-8 text-sm font-semibold uppercase tracking-wide text-terracotta-600">Bénéfices</h2>
+      <ul class="mt-2 list-disc space-y-1 pl-5 text-slate-600">
+        <li>usages de l'IA harmonisés et maîtrisés</li>
+        <li>réduction des risques liés aux informations sensibles</li>
+        <li>contenus générés plus fiables (vérification, traçabilité)</li>
+        <li>adoption responsable des outils par les équipes — la littératie exigée par l'article 4 de l'AI Act</li>
+      </ul>
+
+      <p class="mt-6 text-sm text-slate-500">Durée : 2 à 4 semaines selon la taille de l'organisation et le périmètre.</p>
+      <p class="text-sm font-medium text-accent-600">Proposée en complément du forfait plateforme, dans le cadre de l'accompagnement à la journée — sur devis confirmé après le diagnostic.</p>
+
+      <div class="mt-8 flex flex-wrap gap-4">
+        <Button href="/contact/?type=cadre_usage_IA" variant="secondary">Demander un échange</Button>
+        <Button href="/formations/" variant="ghost">Voir le catalogue</Button>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
